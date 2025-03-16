@@ -26,6 +26,19 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = '/BeWelness/static/index.html';
     });
 
+
+    // Prevent back navigation
+    window.onpopstate = function () {
+        if (!localStorage.getItem('authEmail')) {
+            window.location.href = '/BeWelness/static/index.html';
+        }
+    };
+
+
+
+    //UI ACTION
+
+
     // Mock list of counselors
     const counselors = [
         { id: 1, name: "Dr. John Doe" },
@@ -182,10 +195,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Prevent back navigation
-    window.onpopstate = function () {
-        if (!localStorage.getItem('authEmail')) {
-            window.location.href = '/BeWelness/static/index.html';
+
+    const chatButton = document.getElementById('chatWithCounselor');
+
+    // Chat button click event
+    chatButton.addEventListener("click", function () {
+        const counselorName = selectedCounselorInput.value;
+        if (counselorName) {
+            let confirmChat = confirm(`Do you want to start a chat with ${counselorName}?`);
+            if (confirmChat) {
+                alert(`Chat started with ${counselorName}!`);
+                // Future: Redirect to chat screen or open chat modal
+            }
+        } else {
+            alert("Please select a counselor first!");
         }
-    };
+    });
+
 });
