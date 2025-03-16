@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+
+  <!-- Google Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="/BeWelness/static/css/register_styles.css">
+</head>
+<body>
+
+<div class="container center-align">
+  <div class="card-panel register-box">
+    <h4>Register</h4>
+
+    <form id="registerForm">
+      <div class="input-field">
+        <input type="text" id="firstName" required>
+        <label for="firstName">First Name</label>
+      </div>
+
+      <div class="input-field">
+        <input type="text" id="lastName" required>
+        <label for="lastName">Last Name</label>
+      </div>
+
+      <div class="input-field">
+        <input type="email" id="registerEmail" required>
+        <label for="registerEmail">Email</label>
+      </div>
+
+      <div class="input-field">
+        <select id="role">
+          <option value="" disabled selected>Choose Role</option>
+          <option value="customer">Customer</option>
+          <option value="counselor">Counselor</option>
+        </select>
+        <label>Role</label>
+      </div>
+
+      <button class="btn green darken-2" type="submit">Register</button>
+    </form>
+
+    <!-- Back to Login -->
+    <p><a href="index.html">Back to Login</a></p>
+  </div>
+</div>
+
+<script src="/BeWelness/static/js/register.js"></script>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    M.FormSelect.init(document.querySelectorAll('select'));
+  });
+</script>
+</body>
+</html>
