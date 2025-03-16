@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function loginUser(email, password) {
     try {
-        const response = await fetch('http://localhost:8090/auth/login', {  // ✅ Correct API URL
+        const response = await fetch('http://localhost:8090/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -30,17 +30,25 @@ async function loginUser(email, password) {
 
         const data = await response.json();
 
-        if (data.code === 200 && data.accessToken) {  // ✅ Check for success response & token
-            alert(data.message);  // ✅ Show success message from API
-            localStorage.setItem('token', data.accessToken); // ✅ Save correct token
-            window.location.href = '/dashboard.html'; // ✅ Redirect after login
+        if (data.code === 200) {
+
+            document.getElementById('loginMessageErr').style.display = 'none';
+            document.getElementById('loginMessageOk').innerText = "Login Successful!";
+            document.getElementById('loginMessageOk').style.display = 'block';
+            
+            localStorage.setItem('authEmail', email);
+            
+            setTimeout(() => {
+                window.location.href = '/BeWelness/static/dashboard.html';
+            }, 1500);
+            
         } else {
-            document.getElementById('loginMessage').innerText = "Login failed. Please check credentials.";
-            document.getElementById('loginMessage').style.display = 'block';
+            document.getElementById('loginMessageErr').innerText = "Login failed. Please check credentials.";
+            document.getElementById('loginMessageErr').style.display = 'block';
         }
     } catch (error) {
-        document.getElementById('loginMessage').innerText = "Network Error: Unable to login.";
-        document.getElementById('loginMessage').style.display = 'block';
+        document.getElementById('loginMessageErr').innerText = "Login failed. Please check credentials.";
+        document.getElementById('loginMessageErr').style.display = 'block';
         console.error('Login error:', error);
     }
 }
