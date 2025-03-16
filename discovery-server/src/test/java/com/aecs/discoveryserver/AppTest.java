@@ -1,4 +1,4 @@
-package com.aecs;
+package com.aecs.discoveryserver;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
