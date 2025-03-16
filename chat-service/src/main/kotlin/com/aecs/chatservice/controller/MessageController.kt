@@ -21,20 +21,8 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/message")
+@RequestMapping("/message")
 class MessageController(private val messageService: MessageSessionService) {
-
-    /*@PostMapping("/send")
-    fun sendMessage(@RequestBody request: SendMessage): ResponseEntity<MessageResponse> {
-        val msgRes = messageService.sendMessage(request)
-        return ResponseEntity.status(msgRes.code).body(msgRes)
-    }
-
-    @GetMapping("/user/{email}")
-    fun getUserMessages(@PathVariable email: String): ResponseEntity<List<Message>> {
-        val listMsg = messageService.getMessagesForUser(email)
-        return ResponseEntity.ok(listMsg)
-    }*/
 
     @PostMapping("/send")
     fun sendMessage(@RequestBody request: SendMessage): ResponseEntity<String> {

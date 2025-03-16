@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/bookings")
 class BookingController(private val bookingService: BookingService) {
 
     @PostMapping("/create")
