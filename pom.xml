@@ -4,15 +4,23 @@
   <groupId>com.aecs</groupId>
   <artifactId>BeWelness</artifactId>
   <packaging>pom</packaging>
+
   <modules>
     <module>api-gateway</module>
     <module>user-service</module>
     <module>chat-service</module>
     <module>booking-service</module>
+    <module>discovery-server</module>
   </modules>
+
   <version>1.0-SNAPSHOT</version>
   <name>BeWelness Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+    <spring-cloud.version>2024.0.0</spring-cloud.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -21,6 +29,20 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
   <build>
     <finalName>BeWelness</finalName>
   </build>
