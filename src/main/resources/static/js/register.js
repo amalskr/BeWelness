@@ -28,41 +28,70 @@ document.addEventListener("DOMContentLoaded", function () {
     roleSelect.addEventListener("change", function () {
         if (roleSelect.value === "counselor") {
             counselingTypeContainer.style.display = "block";
-            M.FormSelect.init(counselingTypeSelect); // Re-initialize Materialize dropdown
+            M.FormSelect.init(counselingTypeSelect);
         } else {
             counselingTypeContainer.style.display = "none";
         }
     });
 
-    // Handle Form Submission
-    registerForm.addEventListener("submit", function (event) {
+    // Handle Form Submission (Make It Async)
+    registerForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const firstName = document.getElementById("firstName").value;
-        const lastName = document.getElementById("lastName").value;
-        const email = document.getElementById("registerEmail").value;
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-        const role = roleSelect.value;
-        const counselingType = counselingTypeSelect.value;
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const email = document.getElementById("registerEmail").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
+        const role = roleSelect.value.toUpperCase(); // Convert role to uppercase
+        const counselingType = role === "COUNSELOR" ? counselingTypeSelect.value : "NA"; // Set "NA" for customers
+
+        // Validate Fields
+        if (!firstName || !lastName || !email || !password) {
+            alert("Please fill in all required fields.");
+            return;
+        }
 
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
 
-        if (!role) {
-            alert("Please select a role.");
-            return;
-        }
-
-        if (role === "counselor" && !counselingType) {
+        if (role === "COUNSELOR" && !counselingType) {
             alert("Please select a counseling type.");
             return;
         }
 
-        alert(`User Registered!\nName: ${firstName} ${lastName}\nEmail: ${email}\nRole: ${role}\nCounseling Type: ${counselingType || "N/A"}`);
+        // Construct JSON Payload
+        const payload = {
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+            counselingType
+        };
 
-        window.location.href = "index.html";
+        try {
+            const response = await fetch("http://localhost:8090/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Registration Successful! Redirecting to login...");
+                window.location.href = "index.html"; // Redirect to login page
+            } else {
+                alert(`Registration Failed: ${data.message || "Unknown Error"}`);
+            }
+        } catch (error) {
+            alert("Network Error: Unable to register.");
+            console.error("Error:", error);
+        }
     });
 });
