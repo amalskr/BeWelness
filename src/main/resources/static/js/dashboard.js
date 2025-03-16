@@ -42,12 +42,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const timeInput = document.getElementById('appointmentTime');
     const confirmBooking = document.getElementById('confirmBooking');
 
+    // Calculate today's date and max selectable date (1 month from today)
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 1); // Set max date 1 month ahead
+
+
     // Initialize Date Picker
     M.Datepicker.init(dateInput, {
         format: "yyyy-mm-dd",
         autoClose: true,
         showClearBtn: true,
-        container: document.body // Attach to body to avoid clipping
+        container: document.body,
+        minDate: today,  // Disable today and past dates
+        maxDate: maxDate // Allow selection up to 1 month from today
     });
 
     // Initialize Time Picker
@@ -74,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handle Booking Confirmation
     confirmBooking.addEventListener("click", function () {
-        const selectedCounselor = selectedCounselorInput.value;
         const selectedDate = dateInput.value;
         const selectedTime = timeInput.value;
 
