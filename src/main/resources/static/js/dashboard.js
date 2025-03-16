@@ -61,8 +61,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize Time Picker
     M.Timepicker.init(timeInput, {
         twelveHour: false,  // Use 24-hour format
-        autoClose: true
+        autoClose: true,
+        onCloseEnd: function () {
+            validateTimeSelection();
+        }
     });
+
+
+    function validateTimeSelection() {
+        const selectedTime = timeInput.value;
+        if (selectedTime) {
+            const [hour, minute] = selectedTime.split(":").map(Number);
+            if (hour < 9 || (hour === 16 && minute > 0) || hour > 16) {
+                alert("Please select a time between 9:00 AM and 4:00 PM.");
+                timeInput.value = "";
+            }
+        }
+    }
 
     // Initialize Materialize Modal
     M.Modal.init(bookingModal);
