@@ -8,6 +8,7 @@
     <module>api-gateway</module>
     <module>user-service</module>
     <module>chat-service</module>
+    <module>booking-service</module>
   </modules>
   <version>1.0-SNAPSHOT</version>
   <name>BeWelness Webapp</name>
