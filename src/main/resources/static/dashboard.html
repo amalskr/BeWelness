@@ -7,14 +7,60 @@
 
     <!-- Google Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/BeWelness/static/css/dashboard_styles.css"> <!-- Custom Styles -->
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
 
-<div class="container">
-    <h3>👋 Hi, <span id="userEmail"></span>!</h3>
-    <button id="logoutBtn" class="btn red">Logout</button>
+<!-- Top Bar -->
+<div class="navbar blue darken-2">
+    <div class="container">
+        <span class="brand-logo left white-text">Welcome, <span id="userEmail"></span></span>
+        <button id="logoutBtn" class="btn red right">Logout</button>
+    </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <!-- Left Panel: Counselors List -->
+        <div class="col s4">
+            <h5>Counselors</h5>
+            <ul id="counselorsList" class="collection">
+                <!-- Counselors will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <!-- Right Panel: Chat Area -->
+        <div class="col s8">
+            <h5>Chat</h5>
+
+            <!-- Counselor Selection -->
+            <div class="input-field">
+                <select id="counselorSelect">
+                    <option value="" disabled selected>Select a Counselor</option>
+                    <!-- Counselors will be dynamically inserted here -->
+                </select>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="card-panel chat-box">
+                <!-- Messages will be dynamically inserted here -->
+            </div>
+
+            <!-- Message Input -->
+            <div class="input-field">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button id="sendMessageBtn" class="btn blue darken-2">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="/BeWelness/static/js/dashboard.js"></script>
 
 </body>
