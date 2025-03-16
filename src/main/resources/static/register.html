@@ -7,7 +7,7 @@
 
   <!-- Google Materialize CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="/BeWelness/static/css/register_styles.css">
+  <link rel="stylesheet" href="/BeWelness/static/css/styles.css">
 </head>
 <body>
 
@@ -31,6 +31,18 @@
         <label for="registerEmail">Email</label>
       </div>
 
+      <!-- Password Fields -->
+      <div class="input-field">
+        <input type="password" id="password" required>
+        <label for="password">Password</label>
+      </div>
+
+      <div class="input-field">
+        <input type="password" id="confirmPassword" required>
+        <label for="confirmPassword">Confirm Password</label>
+      </div>
+
+      <!-- Role Selection -->
       <div class="input-field">
         <select id="role">
           <option value="" disabled selected>Choose Role</option>
@@ -38,6 +50,14 @@
           <option value="counselor">Counselor</option>
         </select>
         <label>Role</label>
+      </div>
+
+      <!-- Counseling Type (Always Visible) -->
+      <div class="input-field" id="counselingTypeContainer">
+        <select id="counselingType">
+          <option value="">Choose Counseling Type</option>
+        </select>
+        <label for="counselingType">Counseling Type</label>
       </div>
 
       <button class="btn green darken-2" type="submit">Register</button>
