@@ -1,13 +1,13 @@
-package com.aecs.apiservice
+package com.aecs.gateway
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ApiServiceApplicationTests {
+class GatewayApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 
 }
