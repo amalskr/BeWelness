@@ -2,9 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Be-Well</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be-Well | Login</title>
+
+    <!-- Google Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Custom Styles -->
+    <link href="css/home.css" rel="stylesheet"/>
 </head>
 <body>
-<h1>Be-Wellness</h1>
+
+<div class="login-container">
+    <h4 class="center-align">Login</h4>
+
+    <form id="loginForm">
+        <div class="input-field">
+            <input type="email" id="email" required>
+            <label for="email">Email</label>
+        </div>
+
+        <div class="input-field">
+            <input type="password" id="password" required>
+            <label for="password">Password</label>
+        </div>
+
+        <button class="btn waves-effect waves-light blue darken-1" type="submit">Login</button>
+    </form>
+
+    <p class="center-align" id="loginMessage" style="color: red; display: none;">Invalid credentials</p>
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<!-- Load Login Script -->
+<script src="js/login.js"></script>
+
 </body>
 </html>
