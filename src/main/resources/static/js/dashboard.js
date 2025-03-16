@@ -33,7 +33,20 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: 3, name: "Dr. Alice Brown" }
     ];
 
+    const myBookings = [
+        { id: 1, counselor: "Dr. John Doe", date: "2025-03-20", time: "10:00 AM" },
+        { id: 2, counselor: "Dr. Alice Brown", date: "2025-03-22", time: "2:00 PM" },
+        { id: 3, counselor: "Dr. Jane Smith", date: "2025-03-25", time: "11:30 AM" },
+        { id: 4, counselor: "Dr. John Doe", date: "2025-03-27", time: "3:00 PM" },
+        { id: 5, counselor: "Dr. Alice Brown", date: "2025-03-29", time: "9:15 AM" },
+        { id: 6, counselor: "Dr. John Doe", date: "2025-04-01", time: "1:00 PM" },
+        { id: 7, counselor: "Dr. Jane Smith", date: "2025-04-03", time: "10:45 AM" },
+        { id: 8, counselor: "Dr. Alice Brown", date: "2025-04-05", time: "4:00 PM" }
+    ];
+
+
     // Populate counselor list
+    const myBookingsList = document.getElementById('myBookingsList');
     const counselorsList = document.getElementById('counselorsList');
     const counselorSelect = document.getElementById('counselorSelect');
     const selectedCounselorInput = document.getElementById('selectedCounselor');
@@ -93,6 +106,15 @@ document.addEventListener("DOMContentLoaded", function () {
             M.Modal.getInstance(bookingModal).open(); // Open modal
         });
         counselorsList.appendChild(li);
+    });
+
+
+    // Populate My Bookings Section
+    myBookings.forEach(booking => {
+        let li = document.createElement("li");
+        li.className = "collection-item";
+        li.innerHTML = `<strong>${booking.counselor}</strong> <br> ${booking.date} at ${booking.time}`;
+        myBookingsList.appendChild(li);
     });
 
     // Handle Booking Confirmation

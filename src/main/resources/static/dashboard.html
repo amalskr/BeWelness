@@ -25,12 +25,22 @@
 
 <div class="container">
     <div class="row">
-        <!-- Left Panel: Counselors List -->
+        <!-- Left Panel: Scrollable Counselors List & My Bookings -->
         <div class="col s4">
             <h5>Counselors</h5>
-            <ul id="counselorsList" class="collection">
-                <!-- Counselors will be dynamically inserted here -->
-            </ul>
+            <div class="scrollable-list">
+                <ul id="counselorsList" class="collection">
+                    <!-- Counselors dynamically added here -->
+                </ul>
+            </div>
+
+            <!-- My Bookings Section -->
+            <h5>My Bookings</h5>
+            <div class="my-bookings-container">
+                <ul id="myBookingsList" class="collection red-text">
+                    <!-- User's booked appointments dynamically added here -->
+                </ul>
+            </div>
         </div>
 
         <!-- Right Panel: Chat Area -->
