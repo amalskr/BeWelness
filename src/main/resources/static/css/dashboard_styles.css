@@ -26,3 +26,15 @@ body {
 .input-field {
     margin-top: 10px;
 }
+
+.modal {
+    overflow: visible !important; /* Ensure elements inside modal are visible */
+}
+
+.modal-content {
+    overflow: visible !important; /* Prevent content from being cut off */
+}
+
+.datepicker-container {
+    z-index: 10000 !important; /* Bring the date picker to the top */
+}

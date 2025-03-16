@@ -63,5 +63,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="/BeWelness/static/js/dashboard.js"></script>
 
+<!-- Booking Modal -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <h5>Book an Appointment</h5>
+        <form id="bookingForm">
+            <!-- Read-Only Counselor Name -->
+            <div class="input-field">
+                <input type="text" id="selectedCounselor" readonly>
+                <label for="selectedCounselor">Counselor</label>
+            </div>
+
+            <!-- Date Picker -->
+            <div class="input-field">
+                <input type="text" id="appointmentDate" class="datepicker" required>
+                <label for="appointmentDate">Select Date</label>
+            </div>
+
+            <!-- Time Picker -->
+            <div class="input-field">
+                <input type="text" id="appointmentTime" class="timepicker" required>
+                <label for="appointmentTime">Select Time</label>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Buttons -->
+    <div class="modal-footer">
+        <button id="cancelBooking" class="modal-close btn grey">Cancel</button>
+        <button id="confirmBooking" class="btn blue darken-2">Book Appointment</button>
+    </div>
+</div>
+
+
 </body>
 </html>

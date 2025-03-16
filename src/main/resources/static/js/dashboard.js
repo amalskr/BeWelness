@@ -36,6 +36,60 @@ document.addEventListener("DOMContentLoaded", function () {
     // Populate counselor list
     const counselorsList = document.getElementById('counselorsList');
     const counselorSelect = document.getElementById('counselorSelect');
+    const selectedCounselorInput = document.getElementById('selectedCounselor');
+    const bookingModal = document.getElementById('bookingModal');
+    const dateInput = document.getElementById('appointmentDate');
+    const timeInput = document.getElementById('appointmentTime');
+    const confirmBooking = document.getElementById('confirmBooking');
+
+    // Initialize Date Picker
+    M.Datepicker.init(dateInput, {
+        format: "yyyy-mm-dd",
+        autoClose: true,
+        showClearBtn: true,
+        container: document.body // Attach to body to avoid clipping
+    });
+
+    // Initialize Time Picker
+    M.Timepicker.init(timeInput, {
+        twelveHour: false,  // Use 24-hour format
+        autoClose: true
+    });
+
+    // Initialize Materialize Modal
+    M.Modal.init(bookingModal);
+
+    // Populate Counselors List
+    counselors.forEach(counselor => {
+        let li = document.createElement("li");
+        li.className = "collection-item";
+        li.innerText = counselor.name;
+        li.addEventListener("click", function () {
+            selectedCounselorInput.value = counselor.name; // Set counselor name
+            M.updateTextFields(); // Refresh Materialize input fields
+            M.Modal.getInstance(bookingModal).open(); // Open modal
+        });
+        counselorsList.appendChild(li);
+    });
+
+    // Handle Booking Confirmation
+    confirmBooking.addEventListener("click", function () {
+        const selectedCounselor = selectedCounselorInput.value;
+        const selectedDate = dateInput.value;
+        const selectedTime = timeInput.value;
+
+        if (!selectedDate || !selectedTime) {
+            alert("Please select a valid date and time.");
+            return;
+        }
+
+        // Simulated booking API call (Replace with actual API)
+        alert(`Appointment booked on ${selectedDate} at ${selectedTime}`);
+
+
+        // Close modal after booking
+        M.Modal.getInstance(document.getElementById("bookingModal")).close();
+    });
 
     counselors.forEach(counselor => {
         // Add to left panel
