@@ -20,7 +20,6 @@ class BookingService(private val bookingRepository: BookingRepository) {
 
     @Autowired
     private val userServiceClient: UserServiceClient? = null
-    //val customerEmail = userServiceClient?.getUserEmail(request.userId)
 
     //Create a new booking
     fun createBooking(request: BookSession): ResponseEntity<String> {

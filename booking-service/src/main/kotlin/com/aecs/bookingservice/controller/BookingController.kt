@@ -4,7 +4,6 @@ import com.aecs.bookingservice.dto.BookSession
 import com.aecs.bookingservice.dto.CounselorBooking
 import com.aecs.bookingservice.dto.CustomerBooking
 import com.aecs.bookingservice.dto.UpdateBookingStatus
-import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.service.BookingService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
