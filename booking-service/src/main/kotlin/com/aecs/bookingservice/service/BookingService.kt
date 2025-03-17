@@ -85,7 +85,8 @@ class BookingService(private val bookingRepository: BookingRepository) {
     fun getBookingsByCustomer(cusId: Int): List<CustomerBooking> {
         val bookings = bookingRepository.findByUserId(cusId)
 
-        return bookings.map { booking ->
+        return bookings.sortedBy { it.sessionDateTime } // sortedByDescending
+            .map { booking ->
             val profile = userServiceClient?.getProfile(booking.counselorId)
 
             CustomerBooking(
