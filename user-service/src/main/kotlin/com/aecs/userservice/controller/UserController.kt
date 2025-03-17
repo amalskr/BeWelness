@@ -1,6 +1,7 @@
 package com.aecs.userservice.controller
 
 import com.aecs.userservice.dto.CounselorResponse
+import com.aecs.userservice.dto.ProfileResponse
 import com.aecs.userservice.dto.UpdateRequest
 import com.aecs.userservice.dto.UserResponse
 import com.aecs.userservice.model.User
@@ -36,5 +37,14 @@ class UserController(private val userService: UserService) {
     @GetMapping("/counselors")
     fun getAllCounselors(): List<CounselorResponse> {
         return userService.getAllCounselors()
+    }
+
+    @GetMapping("/profiles")
+    fun getUsersProfileById(
+        @RequestParam customerId: Int,
+        @RequestParam counselorId: Int
+    ): ResponseEntity<ProfileResponse> {
+        val profiles = userService.getUsersProfile(customerId, counselorId)
+        return ResponseEntity.ok(profiles)
     }
 }
