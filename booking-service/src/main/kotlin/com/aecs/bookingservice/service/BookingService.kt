@@ -1,6 +1,7 @@
 package com.aecs.bookingservice.service
 
 import com.aecs.bookingservice.dto.BookSession
+import com.aecs.bookingservice.dto.CustomerBooking
 import com.aecs.bookingservice.dto.UpdateBookingStatus
 import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.model.BookingStatus
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.time.format.DateTimeFormatter
 
 
 @Service
@@ -78,8 +80,22 @@ class BookingService(private val bookingRepository: BookingRepository) {
         }
     }
 
-    fun getBookingsByCustomer(cusId: Int): List<Booking> {
-        return bookingRepository.findByUserId(cusId)
+
+    fun getBookingsByCustomer(cusId: Int): List<CustomerBooking> {
+        val bookings = bookingRepository.findByUserId(cusId)
+
+        return bookings.map { booking ->
+            val profile = userServiceClient?.getProfile(booking.counselorId)
+
+            CustomerBooking(
+                id = booking.id,
+                conId = booking.counselorId,
+                counselorName = profile?.firstName + " " + profile?.lastName,
+                counselorEmail = profile?.email.orEmpty(),
+                sessionDateTime = booking.sessionDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                status = booking.status
+            )
+        }
     }
 
     fun getBookingsByCounselor(conId: Int): List<Booking> {

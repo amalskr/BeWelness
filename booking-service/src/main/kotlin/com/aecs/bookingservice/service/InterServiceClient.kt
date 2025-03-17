@@ -18,6 +18,13 @@ class UserServiceClient {
             ?.block()
     }
 
+    fun getProfile(userId: Int): Profile? {
+        return webClient?.get()?.uri("/user/{userId}", userId)
+            ?.retrieve()
+            ?.bodyToMono(Profile::class.java)
+            ?.block()
+    }
+
     fun getUserProfiles(cusId: Int, conId: Int): ProfileResponse? {
         return webClient?.get()
             ?.uri { builder ->
