@@ -14,11 +14,10 @@ class BookingController(private val bookingService: BookingService) {
 
     @PostMapping("/create")
     fun bookSession(@RequestBody request: BookSession): ResponseEntity<String> {
-        bookingService.createBooking(request)
-        return ResponseEntity.ok("Session booked successfully")
+        return bookingService.createBooking(request)
     }
 
-    @GetMapping("/customer/{email}")
+    /*@GetMapping("/customer/{email}")
     fun getCustomerBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
         return ResponseEntity.ok(bookingService.getBookingsByCustomer(email))
     }
@@ -26,9 +25,9 @@ class BookingController(private val bookingService: BookingService) {
     @GetMapping("/counselor/{email}")
     fun getCounselorBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
         return ResponseEntity.ok(bookingService.getBookingsByCounselor(email))
-    }
+    }*/
 
-    @PutMapping("/update")
+    /*@PutMapping("/update")
     fun updateBookingStatus(@RequestBody request: UpdateBookingStatus): ResponseEntity<String> {
         val status = bookingService.updateBookingStatus(request)
 
@@ -38,5 +37,5 @@ class BookingController(private val bookingService: BookingService) {
             HttpStatus.NOT_FOUND -> ResponseEntity.status(404).body("Booking not found")
             else -> ResponseEntity.status(500).body("An error occurred")
         }
-    }
+    }*/
 }

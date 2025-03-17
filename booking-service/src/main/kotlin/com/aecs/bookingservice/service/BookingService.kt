@@ -7,6 +7,7 @@ import com.aecs.bookingservice.model.BookingStatus
 import com.aecs.bookingservice.repository.BookingRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 
@@ -16,8 +17,27 @@ class BookingService(private val bookingRepository: BookingRepository) {
     @Autowired
     private val userServiceClient: UserServiceClient? = null
 
+    //Create a new booking
+    fun createBooking(request: BookSession): ResponseEntity<String> {
+        //val customerEmail = userServiceClient?.getUserEmail(request.userId)
+
+        val booking = Booking(
+            userId = request.userId,
+            counselorId = request.counselorId,
+            sessionDateTime = request.sessionDateTime
+        )
+
+        val savedBooking =bookingRepository.save(booking)
+
+        return if (savedBooking == booking) {
+            ResponseEntity.ok("Booking Success")
+        } else {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save booking")
+        }
+    }
+
     //update booking status [DONE,ACCEPTED etc.]
-    fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
+    /*fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
         val booking = bookingRepository.findById(request.bookingId)
 
         if (booking.isPresent) {
@@ -49,28 +69,13 @@ class BookingService(private val bookingRepository: BookingRepository) {
             }
         }
         return HttpStatus.NOT_FOUND
-    }
+    }*/
 
-    fun createBooking(request: BookSession): HttpStatus {
-        val customerEmail = userServiceClient?.getUserEmail(request.userId)
-
-        customerEmail?.let {
-            val booking = Booking(
-                userId = request.userId,
-                customerEmail = customerEmail,
-                counselorEmail = request.counselorEmail,
-                sessionDateTime = request.sessionDateTime
-            )
-            bookingRepository.save(booking)
-            return HttpStatus.OK
-        } ?: return HttpStatus.FORBIDDEN
-    }
-
-    fun getBookingsByCustomer(email: String): List<Booking> {
+    /*fun getBookingsByCustomer(email: String): List<Booking> {
         return bookingRepository.findByCustomerEmail(email)
     }
 
     fun getBookingsByCounselor(email: String): List<Booking> {
         return bookingRepository.findByCounselorEmail(email)
-    }
+    }*/
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class BookSession(
     val userId: Int,
-    val counselorEmail: String,
+    val counselorId: Int,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     val sessionDateTime: LocalDateTime
 )
