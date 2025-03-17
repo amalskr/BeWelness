@@ -29,13 +29,13 @@ class BookingController(private val bookingService: BookingService) {
         }
     }
 
-    /*@GetMapping("/customer/{email}")
-    fun getCustomerBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
-        return ResponseEntity.ok(bookingService.getBookingsByCustomer(email))
+    @GetMapping("/customer/{id}")
+    fun getCustomerBookings(@PathVariable id: Int): ResponseEntity<List<Booking>> {
+        return ResponseEntity.ok(bookingService.getBookingsByCustomer(id))
     }
 
-    @GetMapping("/counselor/{email}")
-    fun getCounselorBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
-        return ResponseEntity.ok(bookingService.getBookingsByCounselor(email))
-    }*/
+    @GetMapping("/counselor/{id}")
+    fun getCounselorBookings(@PathVariable id: Int): ResponseEntity<List<Booking>> {
+        return ResponseEntity.ok(bookingService.getBookingsByCounselor(id))
+    }
 }

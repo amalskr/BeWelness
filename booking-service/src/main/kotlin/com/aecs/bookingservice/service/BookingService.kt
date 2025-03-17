@@ -78,11 +78,11 @@ class BookingService(private val bookingRepository: BookingRepository) {
         }
     }
 
-    /*fun getBookingsByCustomer(email: String): List<Booking> {
-        return bookingRepository.findByCustomerEmail(email)
+    fun getBookingsByCustomer(cusId: Int): List<Booking> {
+        return bookingRepository.findByUserId(cusId)
     }
 
-    fun getBookingsByCounselor(email: String): List<Booking> {
-        return bookingRepository.findByCounselorEmail(email)
-    }*/
+    fun getBookingsByCounselor(conId: Int): List<Booking> {
+        return bookingRepository.findByCounselorId(conId)
+    }
 }
