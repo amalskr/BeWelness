@@ -52,15 +52,18 @@ class BookingService(private val bookingRepository: BookingRepository) {
     }
 
     fun createBooking(request: BookSession): HttpStatus {
-        val email = userServiceClient?.getUserEmail(1)
+        val customerEmail = userServiceClient?.getUserEmail(request.userId)
 
-        val booking = Booking(
-            customerEmail = "$email request.customerEmail",
-            counselorEmail = request.counselorEmail,
-            sessionDateTime = request.sessionDateTime
-        )
-        bookingRepository.save(booking)
-        return HttpStatus.OK
+        customerEmail?.let {
+            val booking = Booking(
+                userId = request.userId,
+                customerEmail = customerEmail,
+                counselorEmail = request.counselorEmail,
+                sessionDateTime = request.sessionDateTime
+            )
+            bookingRepository.save(booking)
+            return HttpStatus.OK
+        } ?: return HttpStatus.FORBIDDEN
     }
 
     fun getBookingsByCustomer(email: String): List<Booking> {

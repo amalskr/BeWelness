@@ -9,7 +9,7 @@ class UserServiceClient {
     @Autowired
     private val webClient: WebClient? = null
 
-    fun getUserEmail(userId: Long?): String? {
+    fun getUserEmail(userId: Int?): String? {
         return webClient?.get()?.uri("/user/{userId}", userId)
             ?.retrieve()
             ?.bodyToMono(UserResponse::class.java)

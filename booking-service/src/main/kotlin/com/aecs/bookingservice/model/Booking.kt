@@ -13,6 +13,9 @@ data class Booking(
     val id: Int = 0,
 
     @Column(nullable = false)
+    val userId: Int,
+
+    @Column(nullable = false)
     val customerEmail: String, // The user making the booking
 
     @Column(nullable = false)
