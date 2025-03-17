@@ -1,16 +1,23 @@
 package com.aecs.userservice.service
 
-import com.aecs.userservice.model.CounselingType
-import com.aecs.userservice.model.Role
 import com.aecs.userservice.dto.CounselorResponse
 import com.aecs.userservice.dto.UpdateRequest
 import com.aecs.userservice.dto.UserResponse
+import com.aecs.userservice.model.CounselingType
+import com.aecs.userservice.model.Role
+import com.aecs.userservice.model.User
 import com.aecs.userservice.repository.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepo: UserRepository) {
+
+    //get user profile
+    fun getUserById(userId: Int): User? {
+        val user = userRepo.findById(userId)
+        return user.get()
+    }
 
     // get all COUNSELLOR list
     fun getAllCounselors(): List<CounselorResponse> {
