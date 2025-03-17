@@ -5,12 +5,18 @@ import com.aecs.bookingservice.dto.UpdateBookingStatus
 import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.model.BookingStatus
 import com.aecs.bookingservice.repository.BookingRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+
 
 @Service
 class BookingService(private val bookingRepository: BookingRepository) {
 
+    @Autowired
+    private val userServiceClient: UserServiceClient? = null
+
+    //update booking status [DONE,ACCEPTED etc.]
     fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
         val booking = bookingRepository.findById(request.bookingId)
 
@@ -46,8 +52,10 @@ class BookingService(private val bookingRepository: BookingRepository) {
     }
 
     fun createBooking(request: BookSession): HttpStatus {
+        val email = userServiceClient?.getUserEmail(1)
+
         val booking = Booking(
-            customerEmail = request.customerEmail,
+            customerEmail = "$email request.customerEmail",
             counselorEmail = request.counselorEmail,
             sessionDateTime = request.sessionDateTime
         )
