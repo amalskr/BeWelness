@@ -4,6 +4,7 @@ import com.aecs.bookingservice.dto.BookSession
 import com.aecs.bookingservice.dto.UpdateBookingStatus
 import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.model.BookingStatus
+import com.aecs.bookingservice.model.Role
 import com.aecs.bookingservice.repository.BookingRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,10 +17,10 @@ class BookingService(private val bookingRepository: BookingRepository) {
 
     @Autowired
     private val userServiceClient: UserServiceClient? = null
+    //val customerEmail = userServiceClient?.getUserEmail(request.userId)
 
     //Create a new booking
     fun createBooking(request: BookSession): ResponseEntity<String> {
-        //val customerEmail = userServiceClient?.getUserEmail(request.userId)
 
         val booking = Booking(
             userId = request.userId,
@@ -27,7 +28,7 @@ class BookingService(private val bookingRepository: BookingRepository) {
             sessionDateTime = request.sessionDateTime
         )
 
-        val savedBooking =bookingRepository.save(booking)
+        val savedBooking = bookingRepository.save(booking)
 
         return if (savedBooking == booking) {
             ResponseEntity.ok("Booking Success")
@@ -36,20 +37,25 @@ class BookingService(private val bookingRepository: BookingRepository) {
         }
     }
 
-    //update booking status [DONE,ACCEPTED etc.]
-    /*fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
+    /*
+    * update booking status [DONE,ACCEPTED etc.]
+    * COUNSELOR (PENDING, CONFIRMED, CANCELED, DONE)
+    * CUSTOMER only cancel
+    * */
+    fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
+
+        val profiles = userServiceClient?.getUserProfiles(request.requesterId, request.counselorId)
+        val requester = profiles?.customer?.role
+
         val booking = bookingRepository.findById(request.bookingId)
 
-        if (booking.isPresent) {
+        if (!booking.isEmpty) {
+
             val existingBooking = booking.get()
 
             return when {
-                // If both customerEmail and counselorEmail are null, reject the request
-                request.customerEmail == null && request.counselorEmail == null -> HttpStatus.BAD_REQUEST
-
                 // CUSTOMER can ONLY cancel the booking
-                request.customerEmail != null &&
-                        request.customerEmail == existingBooking.customerEmail &&
+                requester != null && requester == Role.CUSTOMER &&
                         request.newStatus == BookingStatus.CANCELED -> {
                     existingBooking.status = BookingStatus.CANCELED
                     bookingRepository.save(existingBooking)
@@ -57,8 +63,7 @@ class BookingService(private val bookingRepository: BookingRepository) {
                 }
 
                 // COUNSELOR can update to any status (PENDING, CONFIRMED, CANCELED, DONE)
-                request.counselorEmail != null &&
-                        request.counselorEmail == existingBooking.counselorEmail -> {
+                requester != null && requester == Role.COUNSELLOR -> {
                     existingBooking.status = request.newStatus
                     bookingRepository.save(existingBooking)
                     HttpStatus.OK
@@ -67,9 +72,11 @@ class BookingService(private val bookingRepository: BookingRepository) {
                 // Unauthorized update attempt
                 else -> HttpStatus.FORBIDDEN
             }
+
+        } else {
+            return HttpStatus.NOT_FOUND
         }
-        return HttpStatus.NOT_FOUND
-    }*/
+    }
 
     /*fun getBookingsByCustomer(email: String): List<Booking> {
         return bookingRepository.findByCustomerEmail(email)
