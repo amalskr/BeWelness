@@ -1,6 +1,7 @@
 package com.aecs.bookingservice.service
 
 import com.aecs.bookingservice.dto.BookSession
+import com.aecs.bookingservice.dto.CounselorBooking
 import com.aecs.bookingservice.dto.CustomerBooking
 import com.aecs.bookingservice.dto.UpdateBookingStatus
 import com.aecs.bookingservice.model.Booking
@@ -81,6 +82,7 @@ class BookingService(private val bookingRepository: BookingRepository) {
     }
 
 
+    // get all Customer bookings
     fun getBookingsByCustomer(cusId: Int): List<CustomerBooking> {
         val bookings = bookingRepository.findByUserId(cusId)
 
@@ -98,7 +100,22 @@ class BookingService(private val bookingRepository: BookingRepository) {
         }
     }
 
-    fun getBookingsByCounselor(conId: Int): List<Booking> {
-        return bookingRepository.findByCounselorId(conId)
+    // get all Counselor bookings
+    fun getBookingsByCounselor(conId: Int): List<CounselorBooking> {
+        val bookings = bookingRepository.findByCounselorId(conId)
+
+        return bookings.map { booking ->
+            val profile = userServiceClient?.getProfile(booking.userId)
+
+            CounselorBooking(
+                id = booking.id,
+                cusId = booking.counselorId,
+                customerName = profile?.firstName + " " + profile?.lastName,
+                customerEmail = profile?.email.orEmpty(),
+                sessionDateTime = booking.sessionDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                status = booking.status
+            )
+        }
+
     }
 }

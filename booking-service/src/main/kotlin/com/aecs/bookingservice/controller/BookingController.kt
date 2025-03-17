@@ -1,6 +1,7 @@
 package com.aecs.bookingservice.controller
 
 import com.aecs.bookingservice.dto.BookSession
+import com.aecs.bookingservice.dto.CounselorBooking
 import com.aecs.bookingservice.dto.CustomerBooking
 import com.aecs.bookingservice.dto.UpdateBookingStatus
 import com.aecs.bookingservice.model.Booking
@@ -36,7 +37,7 @@ class BookingController(private val bookingService: BookingService) {
     }
 
     @GetMapping("/counselor/{id}")
-    fun getCounselorBookings(@PathVariable id: Int): ResponseEntity<List<Booking>> {
+    fun getCounselorBookings(@PathVariable id: Int): ResponseEntity<List<CounselorBooking>> {
         return ResponseEntity.ok(bookingService.getBookingsByCounselor(id))
     }
 }
