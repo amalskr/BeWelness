@@ -24,6 +24,17 @@ class BookingService(private val bookingRepository: BookingRepository) {
     //Create a new booking
     fun createBooking(request: BookSession): ResponseEntity<String> {
 
+        // Check if a booking already exists for the same counselor at the same session time
+        val existingBooking = bookingRepository.findByCounselorIdAndSessionDateTimeAndStatusNot(
+            request.counselorId,
+            request.sessionDateTime,
+            BookingStatus.DONE
+        )
+
+        if (existingBooking != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Counselor is already booked for this time.")
+        }
+
         val booking = Booking(
             userId = request.userId,
             counselorId = request.counselorId,
@@ -87,17 +98,17 @@ class BookingService(private val bookingRepository: BookingRepository) {
 
         return bookings.sortedBy { it.sessionDateTime } // sortedByDescending
             .map { booking ->
-            val profile = userServiceClient?.getProfile(booking.counselorId)
+                val profile = userServiceClient?.getProfile(booking.counselorId)
 
-            CustomerBooking(
-                id = booking.id,
-                conId = booking.counselorId,
-                counselorName = profile?.firstName + " " + profile?.lastName,
-                counselorEmail = profile?.email.orEmpty(),
-                sessionDateTime = booking.sessionDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                status = booking.status
-            )
-        }
+                CustomerBooking(
+                    id = booking.id,
+                    conId = booking.counselorId,
+                    counselorName = profile?.firstName + " " + profile?.lastName,
+                    counselorEmail = profile?.email.orEmpty(),
+                    sessionDateTime = booking.sessionDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    status = booking.status
+                )
+            }
     }
 
     // get all Counselor bookings
