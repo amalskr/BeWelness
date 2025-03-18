@@ -3,6 +3,7 @@ package com.aecs.userservice.service
 
 import com.aecs.betterwellness.authservice.dto.AuthResponse
 import com.aecs.betterwellness.authservice.dto.LoginResponse
+import com.aecs.betterwellness.authservice.dto.Profile
 import com.aecs.userservice.model.User
 import com.aecs.userservice.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,14 +27,22 @@ class AuthService @Autowired constructor(private val userRepo: UserRepository) {
         val existingUser = userRepo.findByEmail(email)
 
         return if (!existingUser.isPresent) {
-            LoginResponse(code = HttpStatus.UNAUTHORIZED.value(), message = "Invalid credentials", null)
+            LoginResponse(code = HttpStatus.UNAUTHORIZED.value(), message = "Invalid credentials", null, null)
         } else {
             val isPwMatch = password == existingUser.get().password
             if (existingUser.isPresent && isPwMatch) {
-                val fullName = existingUser.get().firstName + " " + existingUser.get().lastName
-                LoginResponse(code = HttpStatus.OK.value(), message = "Successfully logged in! $fullName", "12345")
+                val user = existingUser.get()
+                val profile = Profile(
+                    firstName = user.firstName,
+                    lastName = user.lastName,
+                    email = user.email,
+                    role = user.role,
+                    counselingType = user.counselingType
+                )
+                val fullName = "${profile.firstName} ${profile.lastName}"
+                LoginResponse(code = HttpStatus.OK.value(), message = "Welcome $fullName", "12345", profile)
             } else {
-                LoginResponse(code = HttpStatus.UNAUTHORIZED.value(), message = "Invalid credentials", null)
+                LoginResponse(code = HttpStatus.UNAUTHORIZED.value(), message = "Invalid credentials", null, null)
             }
         }
     }
