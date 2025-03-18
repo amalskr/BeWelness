@@ -33,9 +33,10 @@ async function loginUser(email, password) {
         if (data.code === 200) {
 
             document.getElementById('loginMessageErr').style.display = 'none';
-            document.getElementById('loginMessageOk').innerText = "Login Successful!";
+            document.getElementById('loginMessageOk').innerText = data.message;
             document.getElementById('loginMessageOk').style.display = 'block';
-            
+
+            //save data
             localStorage.setItem('authEmail', email);
             
             setTimeout(() => {
