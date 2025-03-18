@@ -229,8 +229,6 @@ async function confirmBookingApi(selectedDate, selectedTime) {
         sessionDateTime: sessionDateTime
     };
 
-    console.log("bookingData "+userId+" "+counselorId+" "+sessionDateTime);
-
     try {
         const response = await fetch('http://localhost:8090/bookings/create', {
             method: 'POST',
@@ -243,11 +241,15 @@ async function confirmBookingApi(selectedDate, selectedTime) {
         const result = await response.json();
 
         if (response.ok) {
-            alert("Booking successful!");
-            M.Modal.getInstance(bookingModal).close();
+            alert(result.message);
+
+            if (result.message.includes("Success")) {
+                M.Modal.getInstance(bookingModal).close();
+            }
         } else {
             alert(`Booking failed: ${result.message}`);
         }
+
     } catch (error) {
         console.error("Booking error:", error);
         alert("An error occurred while booking. Please try again.");
