@@ -1,8 +1,10 @@
 package com.aecs.chatservice.controller
 
+import com.aecs.chatservice.dto.MessageResponse
 import com.aecs.chatservice.dto.SendMessage
 import com.aecs.chatservice.model.MessageContent
 import com.aecs.chatservice.service.MessageSessionService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -24,9 +26,14 @@ class MessageController(private val messageService: MessageSessionService) {
     * */
 
     @PostMapping("/send")
-    fun sendMessage(@RequestBody request: SendMessage): ResponseEntity<String> {
-        messageService.sendMessage(request)
-        return ResponseEntity.ok("Message sent successfully")
+    fun sendMessage(@RequestBody request: SendMessage): MessageResponse {
+        val status = messageService.sendMessage(request)
+        if (status.value() == HttpStatus.OK.value()) {
+            return MessageResponse(HttpStatus.OK.value(), "Message sent successfully")
+        } else {
+            return MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Message Can't send")
+        }
+
     }
 
     @GetMapping("/list")
