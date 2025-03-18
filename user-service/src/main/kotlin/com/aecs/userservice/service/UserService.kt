@@ -52,6 +52,7 @@ class UserService(private val userRepo: UserRepository) {
         return userRepo.findByRole(Role.COUNSELLOR)
             .map { user ->
                 CounselorResponse(
+                    counselorId = user.id,
                     firstName = user.firstName,
                     lastName = user.lastName,
                     email = user.email,
