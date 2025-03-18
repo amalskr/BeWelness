@@ -14,7 +14,7 @@ class MessageSessionService(
     private val messageContentRepository: MessageContentRepository
 ) {
 
-    fun getOrCreateMessageSession(userEmail: String, counselorEmail: String): MessageSession {
+    /*fun getOrCreateMessageSession(userEmail: String, counselorEmail: String): MessageSession {
         // Check if a session already exists in either direction
         return messageSessionRepository.findByUserEmailAndCounselorEmail(userEmail, counselorEmail)
             .orElseGet {
@@ -22,9 +22,9 @@ class MessageSessionService(
                 val newSession = MessageSession(userEmail = userEmail, counselorEmail = counselorEmail)
                 messageSessionRepository.save(newSession)
             }
-    }
+    }*/
 
-    fun sendMessage(request: SendMessage): HttpStatus {
+    /*fun sendMessage(request: SendMessage): HttpStatus {
         val session = getOrCreateMessageSession(request.userEmail, request.counselorEmail)
 
         val messageContent = MessageContent(
@@ -35,7 +35,7 @@ class MessageSessionService(
 
         messageContentRepository.save(messageContent)
         return HttpStatus.OK
-    }
+    }*/
 
     fun getMessages(userEmail: String, counselorEmail: String): List<MessageContent> {
         val session = messageSessionRepository.findByUserEmailAndCounselorEmail(userEmail, counselorEmail)

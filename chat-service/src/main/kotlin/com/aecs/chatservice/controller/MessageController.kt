@@ -26,7 +26,7 @@ class MessageController(private val messageService: MessageSessionService) {
 
     @PostMapping("/send")
     fun sendMessage(@RequestBody request: SendMessage): ResponseEntity<String> {
-        messageService.sendMessage(request)
+        //messageService.sendMessage(request)
         return ResponseEntity.ok("Message sent successfully")
     }
 

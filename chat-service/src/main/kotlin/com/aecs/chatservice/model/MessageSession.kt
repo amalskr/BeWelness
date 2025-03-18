@@ -9,9 +9,9 @@ data class MessageSession(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    @Column(unique = true, nullable = false)
-    val userEmail: String, // User who initiates chat
+    @Column(nullable = false)
+    val customerId: Int, // User who initiates chat
 
-    @Column(unique = true, nullable = false)
-    val counselorEmail: String // Assigned counselor
+    @Column(nullable = false)
+    val counselorId: Int // Assigned counselor
 )
