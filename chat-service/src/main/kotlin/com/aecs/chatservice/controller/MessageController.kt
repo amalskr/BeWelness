@@ -28,12 +28,11 @@ class MessageController(private val messageService: MessageSessionService) {
     @PostMapping("/send")
     fun sendMessage(@RequestBody request: SendMessage): MessageResponse {
         val status = messageService.sendMessage(request)
-        if (status.value() == HttpStatus.OK.value()) {
-            return MessageResponse(HttpStatus.OK.value(), "Message sent successfully")
+        return if (status.value() == HttpStatus.OK.value()) {
+            MessageResponse(HttpStatus.OK.value(), "Message sent successfully")
         } else {
-            return MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Message Can't send")
+            MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Message Can't send")
         }
-
     }
 
     @GetMapping("/list")

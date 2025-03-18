@@ -76,6 +76,11 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmBookingApi(selectedDate, selectedTime)
     });
 
+    //Start chat with counselor
+    document.getElementById('chatWithCounselor').addEventListener('click', function () {
+       sendMessageApi("Hi, Dr")
+    });
+
     M.Modal.init(bookingModal);
     fetchCounselors();
 
@@ -206,6 +211,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+// Send Message
+async function sendMessageApi(msgContent) {
+    const storedProfile = localStorage.getItem('auth_profile');
+    const profile = JSON.parse(storedProfile);
+
+    const userId = profile.id
+    const counselorId = document.getElementById('modalCounselorId').value;
+
+    if (!msgContent) {
+        alert("Please enter message");
+        return;
+    }
+
+    const sendMsgData = {
+        customerId: userId,
+        counselorId: counselorId,
+        content: msgContent,
+        type:"SENT"
+    };
+
+    try {
+        const response = await fetch('http://localhost:8090/message/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sendMsgData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message);
+
+            if (result.message.includes("successfully")) {
+                M.Modal.getInstance(bookingModal).close();
+            }
+        } else {
+            alert(`Send Message failed: ${result.message}`);
+        }
+
+    } catch (error) {
+        console.error("Send Message error:", error);
+        alert("An error occurred while Send Message. Please try again.");
+    }
+}
 
 //Create Booking API
 async function confirmBookingApi(selectedDate, selectedTime) {
