@@ -33,6 +33,7 @@ class AuthService @Autowired constructor(private val userRepo: UserRepository) {
             if (existingUser.isPresent && isPwMatch) {
                 val user = existingUser.get()
                 val profile = Profile(
+                    id = user.id,
                     firstName = user.firstName,
                     lastName = user.lastName,
                     email = user.email,

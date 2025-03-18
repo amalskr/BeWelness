@@ -37,8 +37,8 @@ async function loginUser(email, password) {
             document.getElementById('loginMessageOk').style.display = 'block';
 
             //save data
-            localStorage.setItem('authEmail', email);
-            
+            localStorage.setItem('auth_profile', JSON.stringify(data.profile));
+
             setTimeout(() => {
                 window.location.href = '/BeWelness/static/dashboard.html';
             }, 1500);
