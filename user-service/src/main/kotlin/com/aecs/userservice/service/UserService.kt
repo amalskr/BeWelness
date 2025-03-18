@@ -1,29 +1,18 @@
 package com.aecs.userservice.service
 
-import com.aecs.userservice.model.CounselingType
-import com.aecs.userservice.model.Role
 import com.aecs.userservice.dto.CounselorResponse
+import com.aecs.userservice.dto.ProfileResponse
 import com.aecs.userservice.dto.UpdateRequest
 import com.aecs.userservice.dto.UserResponse
+import com.aecs.userservice.model.CounselingType
+import com.aecs.userservice.model.Role
+import com.aecs.userservice.model.User
 import com.aecs.userservice.repository.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepo: UserRepository) {
-
-    // get all COUNSELLOR list
-    fun getAllCounselors(): List<CounselorResponse> {
-        return userRepo.findByRole(Role.COUNSELLOR)
-            .map { user ->
-                CounselorResponse(
-                    firstName = user.firstName,
-                    lastName = user.lastName,
-                    email = user.email,
-                    counselingType = user.counselingType
-                )
-            }
-    }
 
     // User Update
     fun update(req: UpdateRequest): UserResponse {
@@ -56,5 +45,35 @@ class UserService(private val userRepo: UserRepository) {
             userRepo.delete(user)
             return UserResponse(HttpStatus.OK.value(), "User deleted successfully")
         } ?: return UserResponse(code = HttpStatus.UNAUTHORIZED.value(), message = "Invalid credentials")
+    }
+
+    // get all COUNSELLOR list
+    fun getAllCounselors(): List<CounselorResponse> {
+        return userRepo.findByRole(Role.COUNSELLOR)
+            .map { user ->
+                CounselorResponse(
+                    firstName = user.firstName,
+                    lastName = user.lastName,
+                    email = user.email,
+                    counselingType = user.counselingType
+                )
+            }
+    }
+
+    //get user profile
+    fun getUserById(userId: Int): User? {
+        val user = userRepo.findById(userId)
+        return user.get()
+    }
+
+
+    //ADD-ONS
+
+
+    //get user types
+    fun getUsersProfile(userId: Int, counselorId: Int): ProfileResponse {
+        val customer = getUserById(userId)
+        val counselor = getUserById(counselorId)
+        return ProfileResponse(customer = customer, counselor = counselor)
     }
 }

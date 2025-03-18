@@ -1,8 +1,9 @@
 package com.aecs.bookingservice.controller
 
 import com.aecs.bookingservice.dto.BookSession
+import com.aecs.bookingservice.dto.CounselorBooking
+import com.aecs.bookingservice.dto.CustomerBooking
 import com.aecs.bookingservice.dto.UpdateBookingStatus
-import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.service.BookingService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,18 +15,7 @@ class BookingController(private val bookingService: BookingService) {
 
     @PostMapping("/create")
     fun bookSession(@RequestBody request: BookSession): ResponseEntity<String> {
-        bookingService.createBooking(request)
-        return ResponseEntity.ok("Session booked successfully")
-    }
-
-    @GetMapping("/customer/{email}")
-    fun getCustomerBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
-        return ResponseEntity.ok(bookingService.getBookingsByCustomer(email))
-    }
-
-    @GetMapping("/counselor/{email}")
-    fun getCounselorBookings(@PathVariable email: String): ResponseEntity<List<Booking>> {
-        return ResponseEntity.ok(bookingService.getBookingsByCounselor(email))
+        return bookingService.createBooking(request)
     }
 
     @PutMapping("/update")
@@ -38,5 +28,15 @@ class BookingController(private val bookingService: BookingService) {
             HttpStatus.NOT_FOUND -> ResponseEntity.status(404).body("Booking not found")
             else -> ResponseEntity.status(500).body("An error occurred")
         }
+    }
+
+    @GetMapping("/customer/{id}")
+    fun getCustomerBookings(@PathVariable id: Int): ResponseEntity<List<CustomerBooking>> {
+        return ResponseEntity.ok(bookingService.getBookingsByCustomer(id))
+    }
+
+    @GetMapping("/counselor/{id}")
+    fun getCounselorBookings(@PathVariable id: Int): ResponseEntity<List<CounselorBooking>> {
+        return ResponseEntity.ok(bookingService.getBookingsByCounselor(id))
     }
 }

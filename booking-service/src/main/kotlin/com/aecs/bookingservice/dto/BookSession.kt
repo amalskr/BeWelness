@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
 data class BookSession(
-    val customerEmail: String,
-    val counselorEmail: String,
+    val userId: Int,
+    val counselorId: Int,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     val sessionDateTime: LocalDateTime
 )
