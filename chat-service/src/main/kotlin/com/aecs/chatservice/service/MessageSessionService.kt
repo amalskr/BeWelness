@@ -14,18 +14,8 @@ class MessageSessionService(
     private val messageContentRepository: MessageContentRepository
 ) {
 
-    /*fun getOrCreateMessageSession(userEmail: String, counselorEmail: String): MessageSession {
-        // Check if a session already exists in either direction
-        return messageSessionRepository.findByUserEmailAndCounselorEmail(userEmail, counselorEmail)
-            .orElseGet {
-                // Create new session if none exists
-                val newSession = MessageSession(userEmail = userEmail, counselorEmail = counselorEmail)
-                messageSessionRepository.save(newSession)
-            }
-    }*/
-
-    /*fun sendMessage(request: SendMessage): HttpStatus {
-        val session = getOrCreateMessageSession(request.userEmail, request.counselorEmail)
+    fun sendMessage(request: SendMessage): HttpStatus {
+        val session = getOrCreateMessageSession(request.customerId, request.counselorId)
 
         val messageContent = MessageContent(
             messageSession = session,
@@ -35,10 +25,20 @@ class MessageSessionService(
 
         messageContentRepository.save(messageContent)
         return HttpStatus.OK
-    }*/
+    }
 
-    fun getMessages(userEmail: String, counselorEmail: String): List<MessageContent> {
-        val session = messageSessionRepository.findByUserEmailAndCounselorEmail(userEmail, counselorEmail)
+    fun getOrCreateMessageSession(cusId: Int, conId: Int): MessageSession {
+        // Check if a session already exists in either direction
+        return messageSessionRepository.findByCustomerIdAndCounselorId(cusId, conId)
+            .orElseGet {
+                // Create new session if none exists
+                val newSession = MessageSession(customerId = cusId, counselorId = conId)
+                messageSessionRepository.save(newSession)
+            }
+    }
+
+    fun getMessages(cusId: Int, conId: Int): List<MessageContent> {
+        val session = messageSessionRepository.findByCustomerIdAndCounselorId(cusId, conId)
             .orElseThrow { RuntimeException("No messages found") }
 
         return messageContentRepository.findByMessageSession(session)
