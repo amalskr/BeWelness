@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    fetchCounselors();
+
     const profile = JSON.parse(storedProfile);
 
     // Display user profile name in the dashboard
@@ -215,3 +217,43 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+//load all Counselors when load the webpage
+async function fetchCounselors() {
+    try {
+        const response = await fetch('http://localhost:8090/user/counselors');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const counselors = await response.json();
+        const counselorList = document.getElementById('counselorList');
+
+        counselors.forEach(counselor => {
+            // Create a card div for each counselor
+            const counselorCard = document.createElement('div');
+            counselorCard.classList.add('counselor-card');
+
+            // Set the counselor information
+            counselorCard.innerHTML = `
+                <div class="counselor-content">
+                    <h6>${counselor.firstName} ${counselor.lastName}</h6>
+                    <p><strong>${counselor.counselingType}</strong></p>
+                    <p>${counselor.email}</p>
+                    <hr/>
+                </div>
+            `;
+
+            // Click event to show alert with counselorId
+            counselorCard.addEventListener('click', function () {
+                alert(`Counselor ID: ${counselor.counselorId}`);
+            });
+
+            // Append to list
+            counselorList.appendChild(counselorCard);
+        });
+    } catch (error) {
+        console.error("Error fetching counselors:", error);
+    }
+}
