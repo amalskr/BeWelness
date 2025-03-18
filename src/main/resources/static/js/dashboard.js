@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const profile = JSON.parse(storedProfile);
 
     // Display user profile name in the dashboard
-    document.getElementById('userEmail').innerText = profile.firstName + " " + profile.lastName;
+    document.getElementById('profileName').innerText = profile.firstName + " " + profile.lastName;
+    document.getElementById('userEmail').innerText = profile.email
 
     // Logout button functionality
     document.getElementById('logoutBtn').addEventListener('click', function () {
-        localStorage.removeItem('auth_profile'); // Remove stored email
-        localStorage.removeItem('token'); // Remove token
+        localStorage.removeItem('auth_profile');
 
         // Prevent back button navigation
         history.pushState(null, null, window.location.href);
