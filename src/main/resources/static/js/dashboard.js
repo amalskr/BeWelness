@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const profile = JSON.parse(storedProfile);
 
+
     // Display user profile name in the dashboard
     document.getElementById('profileName').innerText = profile.firstName + " " + profile.lastName;
     document.getElementById('userEmail').innerText = profile.email
@@ -61,6 +62,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const timeInput = document.getElementById('appointmentTime');
     const confirmBooking = document.getElementById('confirmBooking');
 
+
+    // Handle Booking Confirmation
+    document.getElementById('bookingNow').addEventListener('click', function () {
+        const selectedDate = dateInput.value;
+        const selectedTime = timeInput.value;
+
+        if (!selectedDate || !selectedTime) {
+            alert("Please select a valid date and time.");
+            return;
+        }
+
+        confirmBookingApi(selectedDate, selectedTime)
+    });
 
     M.Modal.init(bookingModal);
     fetchCounselors();
@@ -125,24 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
         li.className = "collection-item";
         li.innerHTML = `<strong>${booking.counselor}</strong> <br> ${booking.date} at ${booking.time}`;
         myBookingsList.appendChild(li);
-    });
-
-    // Handle Booking Confirmation
-    confirmBooking.addEventListener("click", function () {
-        const selectedDate = dateInput.value;
-        const selectedTime = timeInput.value;
-
-        if (!selectedDate || !selectedTime) {
-            alert("Please select a valid date and time.");
-            return;
-        }
-
-        // Simulated booking API call (Replace with actual API)
-        alert(`Appointment booked on ${selectedDate} at ${selectedTime}`);
-
-
-        // Close modal after booking
-        M.Modal.getInstance(document.getElementById("bookingModal")).close();
     });
 
     counselors.forEach(counselor => {
@@ -210,6 +206,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+//Create Booking API
+async function confirmBookingApi(selectedDate, selectedTime) {
+    const storedProfile = localStorage.getItem('auth_profile');
+    const profile = JSON.parse(storedProfile);
+
+    const userId = profile.id
+    const counselorId = document.getElementById('modalCounselorId').value;
+
+    if (!selectedDate || !selectedTime) {
+        alert("Please select a valid date and time for the appointment.");
+        return;
+    }
+
+    // Construct sessionDateTime in "YYYY-MM-DD HH:MM" format
+    const sessionDateTime = `${selectedDate} ${selectedTime}:00`;
+
+    const bookingData = {
+        userId: userId,
+        counselorId: counselorId,
+        sessionDateTime: sessionDateTime
+    };
+
+    console.log("bookingData "+userId+" "+counselorId+" "+sessionDateTime);
+
+    try {
+        const response = await fetch('http://localhost:8090/bookings/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bookingData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("Booking successful!");
+            M.Modal.getInstance(bookingModal).close();
+        } else {
+            alert(`Booking failed: ${result.message}`);
+        }
+    } catch (error) {
+        console.error("Booking error:", error);
+        alert("An error occurred while booking. Please try again.");
+    }
+}
+
 
 //load all Counselors when load the webpage
 async function fetchCounselors() {
