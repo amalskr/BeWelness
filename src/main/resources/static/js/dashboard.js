@@ -1,19 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Get email from localStorage
-    const email = localStorage.getItem('authEmail');
+    const storedProfile = localStorage.getItem('auth_profile');
 
     // If no email is found, redirect to login
-    if (!email) {
+    if (!storedProfile) {
         window.location.href = '/BeWelness/static/index.html';
         return;
     }
 
-    // Display email in the dashboard
-    document.getElementById('userEmail').innerText = email;
+    const profile = JSON.parse(storedProfile);
+
+    // Display user profile name in the dashboard
+    document.getElementById('userEmail').innerText = profile.firstName + " " + profile.lastName;
 
     // Logout button functionality
     document.getElementById('logoutBtn').addEventListener('click', function () {
-        localStorage.removeItem('authEmail'); // Remove stored email
+        localStorage.removeItem('auth_profile'); // Remove stored email
         localStorage.removeItem('token'); // Remove token
 
         // Prevent back button navigation
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Prevent back navigation
     window.onpopstate = function () {
-        if (!localStorage.getItem('authEmail')) {
+        if (!localStorage.getItem('auth_profile')) {
             window.location.href = '/BeWelness/static/index.html';
         }
     };
