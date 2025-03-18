@@ -6,18 +6,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Sample Counseling Types
     const counselingTypes = [
-        "Mental Health Counseling",
-        "Career Counseling",
-        "Family Counseling",
-        "Substance Abuse Counseling",
-        "Grief Counseling"
+        { label: "Mental Health Counseling", value: "MHC" },
+        { label: "Marriage and family counseling", value: "MF" },
+        { label: "Rehabilitation counseling", value: "RC" },
+        { label: "Couples counseling", value: "CC" },
+        { label: "Addiction counseling", value: "AC" },
+        { label: "Humanistic counseling", value: "HC" },
+        { label: "Substance abuse counseling", value: "SAC" }
     ];
 
     // Populate Counseling Type Dropdown
     counselingTypes.forEach(type => {
         let option = document.createElement("option");
-        option.value = type.toLowerCase().replace(/\s+/g, "-");
-        option.innerText = type;
+        option.value = type.value;  // Backend enum value
+        option.textContent = type.label;  // Display text
         counselingTypeSelect.appendChild(option);
     });
 
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show/Hide Counseling Type Dropdown Based on Role
     roleSelect.addEventListener("change", function () {
-        if (roleSelect.value === "counselor") {
+        if (roleSelect.value === "counsellor") {
             counselingTypeContainer.style.display = "block";
             M.FormSelect.init(counselingTypeSelect);
         } else {
@@ -44,7 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("password").value.trim();
         const confirmPassword = document.getElementById("confirmPassword").value.trim();
         const role = roleSelect.value.toUpperCase(); // Convert role to uppercase
-        const counselingType = role === "COUNSELOR" ? counselingTypeSelect.value : "NA"; // Set "NA" for customers
+        const counselingType = role === "COUNSELLOR" ? counselingTypeSelect.value : "NA"; // Set "NA" for customers
+
+        alert("counselingType "+counselingType +" "+role);
 
         // Validate Fields
         if (!firstName || !lastName || !email || !password) {
@@ -57,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (role === "COUNSELOR" && !counselingType) {
+        if (role === "COUNSELLOR" && !counselingType) {
             alert("Please select a counseling type.");
             return;
         }
@@ -71,6 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
             role,
             counselingType
         };
+
+        console.log(payload);
 
         try {
             const response = await fetch("http://localhost:8090/auth/register", {
