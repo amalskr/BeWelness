@@ -48,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const role = roleSelect.value.toUpperCase(); // Convert role to uppercase
         const counselingType = role === "COUNSELLOR" ? counselingTypeSelect.value : "NA"; // Set "NA" for customers
 
-        alert("counselingType "+counselingType +" "+role);
-
         // Validate Fields
         if (!firstName || !lastName || !email || !password) {
             alert("Please fill in all required fields.");
@@ -75,8 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
             role,
             counselingType
         };
-
-        console.log(payload);
 
         try {
             const response = await fetch("http://localhost:8090/auth/register", {
