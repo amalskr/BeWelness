@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    fetchCounselors();
-
     const profile = JSON.parse(storedProfile);
 
     // Display user profile name in the dashboard
@@ -42,14 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //UI ACTION
 
-
-    // Mock list of counselors
-    const counselors = [
-        { id: 1, name: "Dr. John Doe" },
-        { id: 2, name: "Dr. Jane Smith" },
-        { id: 3, name: "Dr. Alice Brown" }
-    ];
-
     const myBookings = [
         { id: 1, counselor: "Dr. John Doe", date: "2025-03-20", time: "10:00 AM" },
         { id: 2, counselor: "Dr. Alice Brown", date: "2025-03-22", time: "2:00 PM" },
@@ -64,13 +54,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Populate counselor list
     const myBookingsList = document.getElementById('myBookingsList');
-    const counselorsList = document.getElementById('counselorsList');
+    const counselorsList = document.getElementById('counselorList');
     const counselorSelect = document.getElementById('counselorSelect');
-    const selectedCounselorInput = document.getElementById('selectedCounselor');
     const bookingModal = document.getElementById('bookingModal');
     const dateInput = document.getElementById('appointmentDate');
     const timeInput = document.getElementById('appointmentTime');
     const confirmBooking = document.getElementById('confirmBooking');
+
+
+    M.Modal.init(bookingModal);
+    fetchCounselors();
 
     // Calculate today's date and max selectable date (1 month from today)
     const today = new Date();
@@ -110,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Initialize Materialize Modal
-    M.Modal.init(bookingModal);
+    //M.Modal.init(bookingModal);
 
     // Populate Counselors List
     counselors.forEach(counselor => {
@@ -245,9 +238,13 @@ async function fetchCounselors() {
                 </div>
             `;
 
-            // Click event to show alert with counselorId
+            // Click event to open the modal and set details
             counselorCard.addEventListener('click', function () {
-                alert(`Counselor ID: ${counselor.counselorId}`);
+                document.getElementById('modalCounselorName').value = `${counselor.firstName} ${counselor.lastName}`;
+                document.getElementById('modalCounselorId').value = counselor.counselorId;
+
+                // Open the Materialize Modal
+                M.Modal.getInstance(bookingModal).open();
             });
 
             // Append to list
