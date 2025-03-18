@@ -1,9 +1,6 @@
 package com.aecs.bookingservice.controller
 
-import com.aecs.bookingservice.dto.BookSession
-import com.aecs.bookingservice.dto.CounselorBooking
-import com.aecs.bookingservice.dto.CustomerBooking
-import com.aecs.bookingservice.dto.UpdateBookingStatus
+import com.aecs.bookingservice.dto.*
 import com.aecs.bookingservice.service.BookingService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 class BookingController(private val bookingService: BookingService) {
 
     @PostMapping("/create")
-    fun bookSession(@RequestBody request: BookSession): ResponseEntity<String> {
+    fun bookSession(@RequestBody request: BookSession): BookingResponse {
         return bookingService.createBooking(request)
     }
 

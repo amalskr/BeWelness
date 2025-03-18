@@ -1,16 +1,12 @@
 package com.aecs.bookingservice.service
 
-import com.aecs.bookingservice.dto.BookSession
-import com.aecs.bookingservice.dto.CounselorBooking
-import com.aecs.bookingservice.dto.CustomerBooking
-import com.aecs.bookingservice.dto.UpdateBookingStatus
+import com.aecs.bookingservice.dto.*
 import com.aecs.bookingservice.model.Booking
 import com.aecs.bookingservice.model.BookingStatus
 import com.aecs.bookingservice.model.Role
 import com.aecs.bookingservice.repository.BookingRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.format.DateTimeFormatter
 
@@ -22,7 +18,7 @@ class BookingService(private val bookingRepository: BookingRepository) {
     private val userServiceClient: UserServiceClient? = null
 
     //Create a new booking
-    fun createBooking(request: BookSession): ResponseEntity<String> {
+    fun createBooking(request: BookSession): BookingResponse {
 
         // Check if a booking already exists for the same counselor at the same session time
         val existingBooking = bookingRepository.findByCounselorIdAndSessionDateTimeAndStatusNot(
@@ -32,7 +28,7 @@ class BookingService(private val bookingRepository: BookingRepository) {
         )
 
         if (existingBooking != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Counselor is already booked for this time.")
+            return BookingResponse(HttpStatus.OK.value(), "Counselor is already booked for this time.")
         }
 
         val booking = Booking(
@@ -44,9 +40,9 @@ class BookingService(private val bookingRepository: BookingRepository) {
         val savedBooking = bookingRepository.save(booking)
 
         return if (savedBooking == booking) {
-            ResponseEntity.ok("Booking Success")
+            BookingResponse(HttpStatus.OK.value(), "Booking Success")
         } else {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save booking")
+            BookingResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to save booking")
         }
     }
 
