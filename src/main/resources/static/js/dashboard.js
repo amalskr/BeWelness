@@ -9,10 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const profile = JSON.parse(storedProfile);
+    let fullName = profile.firstName + " " + profile.lastName;
 
 
     // Display user profile name in the dashboard
-    document.getElementById('profileName').innerText = profile.firstName + " " + profile.lastName;
+    document.getElementById('profileName').innerText = fullName;
     document.getElementById('userEmail').innerText = profile.email
 
     // Logout button functionality
@@ -38,18 +39,17 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-
     //UI ACTION
 
     const myBookings = [
-        { id: 1, counselor: "Dr. John Doe", date: "2025-03-20", time: "10:00 AM" },
-        { id: 2, counselor: "Dr. Alice Brown", date: "2025-03-22", time: "2:00 PM" },
-        { id: 3, counselor: "Dr. Jane Smith", date: "2025-03-25", time: "11:30 AM" },
-        { id: 4, counselor: "Dr. John Doe", date: "2025-03-27", time: "3:00 PM" },
-        { id: 5, counselor: "Dr. Alice Brown", date: "2025-03-29", time: "9:15 AM" },
-        { id: 6, counselor: "Dr. John Doe", date: "2025-04-01", time: "1:00 PM" },
-        { id: 7, counselor: "Dr. Jane Smith", date: "2025-04-03", time: "10:45 AM" },
-        { id: 8, counselor: "Dr. Alice Brown", date: "2025-04-05", time: "4:00 PM" }
+        {id: 1, counselor: "Dr. John Doe", date: "2025-03-20", time: "10:00 AM"},
+        {id: 2, counselor: "Dr. Alice Brown", date: "2025-03-22", time: "2:00 PM"},
+        {id: 3, counselor: "Dr. Jane Smith", date: "2025-03-25", time: "11:30 AM"},
+        {id: 4, counselor: "Dr. John Doe", date: "2025-03-27", time: "3:00 PM"},
+        {id: 5, counselor: "Dr. Alice Brown", date: "2025-03-29", time: "9:15 AM"},
+        {id: 6, counselor: "Dr. John Doe", date: "2025-04-01", time: "1:00 PM"},
+        {id: 7, counselor: "Dr. Jane Smith", date: "2025-04-03", time: "10:45 AM"},
+        {id: 8, counselor: "Dr. Alice Brown", date: "2025-04-05", time: "4:00 PM"}
     ];
 
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const bookingModal = document.getElementById('bookingModal');
     const dateInput = document.getElementById('appointmentDate');
     const timeInput = document.getElementById('appointmentTime');
-    const confirmBooking = document.getElementById('confirmBooking');
+    const modalCounselorName = document.getElementById('modalCounselorName');
 
 
     // Handle Booking Confirmation
@@ -78,7 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Start chat with counselor
     document.getElementById('chatWithCounselor').addEventListener('click', function () {
-       sendMessageApi("Hi, Dr")
+        sendMessageApi("Hi, Dr." + modalCounselorName.value + " My Name is " + fullName + ", " +
+            "I need a counseling from you. Could you help me")
     });
 
     M.Modal.init(bookingModal);
@@ -229,7 +230,7 @@ async function sendMessageApi(msgContent) {
         customerId: userId,
         counselorId: counselorId,
         content: msgContent,
-        type:"SENT"
+        type: "SENT"
     };
 
     try {
