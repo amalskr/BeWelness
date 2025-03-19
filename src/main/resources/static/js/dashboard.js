@@ -61,15 +61,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Start chat with counselor
     document.getElementById('chatWithCounselor').addEventListener('click', function () {
-        sendMessageApi(modalCounselorName.value, fullName)
+        sendMessageApi(modalCounselorName.value, getFullName())
     });
 
     M.Modal.init(bookingModal);
 
-    console.log(profile.role)
-    console.log(isCustomer())
+
     if (isCustomer()) {
         fetchCounselors();
+    } else {
+        fetchMessagedUsers(profile.id)
     }
 
     loadBookings(profile.id)
@@ -323,6 +324,42 @@ async function loadBookings(customerId) {
         });
     } catch (error) {
         console.error("Error loading bookings:", error);
+    }
+}
+
+// load all messaged users
+async function fetchMessagedUsers(cusId) {
+    try {
+        const response = await fetch("http://localhost:8090/message/customers?counselorId=" + cusId);
+        if (!response.ok) throw new Error("Failed to fetch messaged users");
+
+        const users = await response.json();
+        const dropdown = document.getElementById("messagedUsersDropdown");
+        dropdown.innerHTML = ""; // Clear existing options
+
+        // Default option
+        const defaultOption = document.createElement("option");
+        defaultOption.text = "Select a user";
+        defaultOption.value = "";
+        dropdown.appendChild(defaultOption);
+
+        // Populate dropdown with users
+        users.forEach(user => {
+            const option = document.createElement("option");
+            option.value = user.cusId; // Set value as cusId
+            option.text = user.fullName; // Show full name
+            dropdown.appendChild(option);
+        });
+
+        // Add event listener to show alert on selection
+        dropdown.addEventListener("change", function () {
+            if (this.value) {
+                alert(`Selected Customer ID: ${this.value}`);
+            }
+        });
+
+    } catch (error) {
+        console.error("Error fetching messaged users:", error);
     }
 }
 
