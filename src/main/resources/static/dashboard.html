@@ -52,26 +52,28 @@
 <div id="editBookingModal" class="modal">
     <div class="modal-content">
         <h5>Update Booking</h5>
-        <div class="input-field">
-            <label>Counselor Name</label>
-            <p id="editModalCounselorName"></p>
-        </div>
-        <div class="input-field">
-            <label>Counselor Email</label>
-            <p id="editModalCounselorEmail"></p>
-        </div>
-        <div class="input-field">
-            <label for="editModalSessionDateTime">Session Date & Time</label>
-            <input type="text" id="editModalSessionDateTime" class="browser-default">
-        </div>
-        <div class="input-field">
-            <label for="editModalStatus">Status</label>
-            <select id="editModalStatus" class="browser-default">
-                <option value="PENDING">PENDING</option>
-                <option value="CONFIRMED">CONFIRMED</option>
-                <option value="CANCELED">CANCELED</option>
-                <option value="DONE">DONE</option>
-            </select>
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="editModalCounselorName" class="active">Counselor Name</label>
+                <p id="editModalCounselorName" class="browser-default"></p>
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalCounselorEmail" class="active">Counselor Email</label>
+                <p id="editModalCounselorEmail" class="browser-default"></p>
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalSessionDateTime" class="active">Session Date & Time</label>
+                <input type="text" id="editModalSessionDateTime" class="browser-default">
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalStatus" class="active">Status</label>
+                <select id="editModalStatus" class="browser-default">
+                    <option value="PENDING">PENDING</option>
+                    <option value="CONFIRMED">CONFIRMED</option>
+                    <option value="CANCELED">CANCELED</option>
+                    <option value="DONE">DONE</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
