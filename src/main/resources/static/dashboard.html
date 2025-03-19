@@ -48,6 +48,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="/BeWelness/static/js/dashboard.js"></script>
 
+<!--Edit Booking Model-->
+<div id="editBookingModal" class="modal">
+    <div class="modal-content">
+        <h5>Update Booking</h5>
+        <div class="input-field">
+            <label>Counselor Name</label>
+            <p id="editModalCounselorName"></p>
+        </div>
+        <div class="input-field">
+            <label>Counselor Email</label>
+            <p id="editModalCounselorEmail"></p>
+        </div>
+        <div class="input-field">
+            <label for="editModalSessionDateTime">Session Date & Time</label>
+            <input type="text" id="editModalSessionDateTime" class="browser-default">
+        </div>
+        <div class="input-field">
+            <label for="editModalStatus">Status</label>
+            <select id="editModalStatus" class="browser-default">
+                <option value="PENDING">PENDING</option>
+                <option value="CONFIRMED">CONFIRMED</option>
+                <option value="CANCELED">CANCELED</option>
+                <option value="DONE">DONE</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close btn red">Cancel</button>
+        <button class="btn blue" onclick="updateBooking()">Update</button>
+    </div>
+</div>
+
 <!-- Booking Modal -->
 <div id="bookingModal" class="modal">
     <div class="modal-content">

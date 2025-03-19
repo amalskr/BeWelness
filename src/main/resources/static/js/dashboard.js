@@ -140,6 +140,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function openBookingModal(element) {
+    // Corrected the typo in ID
+    document.getElementById('editModalCounselorName').textContent = element.getAttribute('data-counselor-name');
+    document.getElementById('editModalCounselorEmail').textContent = element.getAttribute('data-counselor-email');
+    document.getElementById('editModalSessionDateTime').value = element.getAttribute('data-session-date');
+    document.getElementById('editModalStatus').value = element.getAttribute('data-status');
+
+    alert(element.getAttribute('data-counselor-name')); // Debugging to check if function is called
+
+    // Ensure modal is properly initialized
+    const modalElement = document.getElementById('editBookingModal');
+    const modalInstance = M.Modal.getInstance(modalElement);
+
+    if (!modalInstance) {
+        M.Modal.init(modalElement); // Initialize if not already initialized
+    }
+
+    M.Modal.getInstance(modalElement).open(); // Open the modal
+}
 
 // load my bookings
 async function loadBookings(customerId) {
@@ -154,6 +173,11 @@ async function loadBookings(customerId) {
         bookings.forEach(booking => {
             const listItem = document.createElement('li');
             listItem.classList.add('collection-item');
+            listItem.setAttribute('data-id', booking.id);
+            listItem.setAttribute('data-counselor-name', booking.counselorName);
+            listItem.setAttribute('data-counselor-email', booking.counselorEmail);
+            listItem.setAttribute('data-session-date', booking.sessionDateTime);
+            listItem.setAttribute('data-status', booking.status);
 
             listItem.innerHTML = `
                         <div class="booking-info">
@@ -167,6 +191,11 @@ async function loadBookings(customerId) {
                             </div>
                         </div>
                     `;
+
+            // Attach click event to open the modal
+            listItem.addEventListener("click", function () {
+                openBookingModal(this); // Pass <li> element
+            });
 
             bookingsList.appendChild(listItem);
         });
