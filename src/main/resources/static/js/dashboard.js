@@ -8,11 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    const profile = JSON.parse(storedProfile);
-    let fullName = profile.firstName + " " + profile.lastName;
+    const profile = getUserProfile();
 
     // Display user profile name in the dashboard
-    document.getElementById('profileName').innerText = fullName;
+    document.getElementById('profileName').innerText = getFullName();
     document.getElementById('userEmail').innerText = profile.email
     document.getElementById('userRole').innerText = profile.role
 
@@ -148,8 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // booking update api
 async function updateBooking() {
     // Get the necessary values from the modal
-    const storedProfile = localStorage.getItem('auth_profile');
-    const profile = JSON.parse(storedProfile);
+    const profile = getUserProfile();
     const requesterId = profile.id
 
     const bookingId = document.getElementById('editModalBookingId').value
@@ -330,8 +328,7 @@ async function loadBookings(customerId) {
 
 // Send Message
 async function sendMessageApi(counselorName, fullName) {
-    const storedProfile = localStorage.getItem('auth_profile');
-    const profile = JSON.parse(storedProfile);
+    const profile = getUserProfile();
     const msgContent = "Hi, Dr." + counselorName + " I'm " + fullName + ", and " +
         "I need a counseling from you. Can we discuss?"
 
@@ -389,9 +386,7 @@ async function sendMessageApi(counselorName, fullName) {
 
 //Create Booking API
 async function confirmBookingApi(selectedDate, selectedTime) {
-    const storedProfile = localStorage.getItem('auth_profile');
-    const profile = JSON.parse(storedProfile);
-
+    const profile = getUserProfile();
     const userId = profile.id
     const counselorId = document.getElementById('modalCounselorId').value;
 
@@ -507,4 +502,10 @@ function getUserProfile() {
 function isCustomer() {
     const prof = getUserProfile(); // Ensure function is called
     return prof && prof.role === "CUSTOMER"; // Check if profile exists and role is CUSTOMER
+}
+
+// Get saved user full name
+function getFullName() {
+    const prof = getUserProfile();
+    return prof.firstName + " " + prof.lastName;
 }
