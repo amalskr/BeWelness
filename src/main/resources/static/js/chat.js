@@ -50,8 +50,6 @@ async function sendMessage() {
     const customerId = chatInfo.cusId
     const counselorId = chatInfo.counID
 
-    alert("myMessage "+customerId +counselorId)
-
     const input = document.getElementById('message');
     const messageText = input.value.trim();
 
@@ -66,26 +64,9 @@ async function sendMessage() {
             if (!response.ok) throw new Error("Failed to send message");
 
             input.value = '';
-            await loadChatHistory(customerId); // Reload chat history on success
+            await loadChatHistory(customerId,counselorId); // Reload chat history on success
         } catch (error) {
             console.error("Error sending message:", error);
         }
     }
 }
-
-//Send Message Api
-/*
-function sendMessage() {
-    const input = document.getElementById('message');
-    const chatBox = document.getElementById('chatBox');
-    const messageText = input.value.trim();
-
-    if (messageText !== '') {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', 'outgoing');
-        messageDiv.textContent = messageText;
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        input.value = '';
-    }
-}*/
