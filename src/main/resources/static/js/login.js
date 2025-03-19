@@ -20,9 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loginUser(email, password) {
     try {
-        const apiUrl = `${BASE_URL}/auth/login`
-        console.log(apiUrl);
-        const response = await fetch(apiUrl, {
+        const response = await fetch(BASE_URL+"/auth/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
