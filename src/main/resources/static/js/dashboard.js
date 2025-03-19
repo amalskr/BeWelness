@@ -372,8 +372,8 @@ async function fetchCounselors() {
             // Set the counselor information
             counselorCard.innerHTML = `
                 <div class="counselor-content">
-                    <h6>${counselor.firstName} ${counselor.lastName}</h6>
-                    <p><strong>${counselor.counselingType}</strong></p>
+                    <h6>Dr. ${counselor.firstName} ${counselor.lastName}</h6>
+                    <p><strong>${getCounselingTypeLabel(counselor.counselingType)}</strong></p>
                     <p>${counselor.email}</p>
                     <hr/>
                 </div>
@@ -394,4 +394,20 @@ async function fetchCounselors() {
     } catch (error) {
         console.error("Error fetching counselors:", error);
     }
+}
+
+// Function to get counseling type label by value
+function getCounselingTypeLabel(value) {
+    const counselingTypes = [
+        { label: "Mental Health Counseling", value: "MHC" },
+        { label: "Marriage and family counseling", value: "MF" },
+        { label: "Rehabilitation counseling", value: "RC" },
+        { label: "Couples counseling", value: "CC" },
+        { label: "Addiction counseling", value: "AC" },
+        { label: "Humanistic counseling", value: "HC" },
+        { label: "Substance abuse counseling", value: "SAC" }
+    ];
+
+    const type = counselingTypes.find(type => type.value === value);
+    return type ? type.label : value; // Return label if found, otherwise return the original value
 }
