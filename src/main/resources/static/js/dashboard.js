@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Display user profile name in the dashboard
     document.getElementById('profileName').innerText = fullName;
     document.getElementById('userEmail').innerText = profile.email
+    document.getElementById('userRole').innerText = profile.role
 
     // Logout button functionality
     document.getElementById('logoutBtn').addEventListener('click', function () {
