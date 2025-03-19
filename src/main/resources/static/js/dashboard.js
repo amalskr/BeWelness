@@ -140,14 +140,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// booking update api
+async function updateBooking() {
+    // Get the necessary values from the modal
+    const storedProfile = localStorage.getItem('auth_profile');
+    const profile = JSON.parse(storedProfile);
+    const requesterId = profile.id
+
+    const bookingId = document.getElementById('editModalBookingId').value
+    const counselorId = document.getElementById('editModalCounselorId').value;
+    const newStatus = document.getElementById('editModalStatus').value;
+
+    // Construct request payload
+    const requestBody = {
+        bookingId: parseInt(bookingId),
+        requesterId: requesterId,
+        counselorId: parseInt(counselorId),
+        newStatus: newStatus
+    };
+
+    try {
+        const response = await fetch('http://localhost:8090/bookings/update', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update booking');
+        }
+
+        alert('Booking updated successfully!');
+        const modalInstance = M.Modal.getInstance(document.getElementById('editBookingModal'));
+        modalInstance.close();
+        await loadBookings(requesterId);
+
+    } catch (error) {
+        console.error('Error updating booking:', error);
+        alert('Failed to update booking. Please try again.');
+    }
+}
+
+// open booking edit model with selected item data
 function openBookingModal(element) {
     // Corrected the typo in ID
+    document.getElementById('editModalBookingId').value = element.getAttribute('data-id');
+    document.getElementById('editModalCounselorId').value = element.getAttribute('data-counselor-id');
     document.getElementById('editModalCounselorName').textContent = element.getAttribute('data-counselor-name');
     document.getElementById('editModalCounselorEmail').textContent = element.getAttribute('data-counselor-email');
     document.getElementById('editModalSessionDateTime').value = element.getAttribute('data-session-date');
     document.getElementById('editModalStatus').value = element.getAttribute('data-status');
-
-    alert(element.getAttribute('data-counselor-name')); // Debugging to check if function is called
 
     // Ensure modal is properly initialized
     const modalElement = document.getElementById('editBookingModal');
@@ -174,6 +216,7 @@ async function loadBookings(customerId) {
             const listItem = document.createElement('li');
             listItem.classList.add('collection-item');
             listItem.setAttribute('data-id', booking.id);
+            listItem.setAttribute('data-counselor-id', booking.conId);
             listItem.setAttribute('data-counselor-name', booking.counselorName);
             listItem.setAttribute('data-counselor-email', booking.counselorEmail);
             listItem.setAttribute('data-session-date', booking.sessionDateTime);
