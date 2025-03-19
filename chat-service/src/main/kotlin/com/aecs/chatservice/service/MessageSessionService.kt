@@ -7,7 +7,6 @@ import com.aecs.chatservice.repository.MessageContentRepository
 import com.aecs.chatservice.repository.MessageSessionRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class MessageSessionService(
@@ -18,9 +17,15 @@ class MessageSessionService(
     fun sendMessage(request: SendMessage): HttpStatus {
         val session = getOrCreateMessageSession(request.customerId, request.counselorId)
 
+        var msg = request.content
+        if (!session.second && msg.contains("I need a counseling from you. Can we discuss?")) {
+            //is new session then edit content
+            msg = "Hi"
+        }
+
         val messageContent = MessageContent(
-            messageSession = session,
-            content = request.content,
+            messageSession = session.first,
+            content = msg,
             type = request.type
         )
 
@@ -28,14 +33,16 @@ class MessageSessionService(
         return HttpStatus.OK
     }
 
-    fun getOrCreateMessageSession(cusId: Int, conId: Int): MessageSession {
+    fun getOrCreateMessageSession(cusId: Int, conId: Int): Pair<MessageSession, Boolean> {
         // Check if a session already exists in either direction
-        return messageSessionRepository.findByCustomerIdAndCounselorId(cusId, conId)
-            .orElseGet {
-                // Create new session if none exists
-                val newSession = MessageSession(customerId = cusId, counselorId = conId)
-                messageSessionRepository.save(newSession)
-            }
+        val existingSession = messageSessionRepository.findByCustomerIdAndCounselorId(cusId, conId)
+
+        return if (existingSession.isPresent) {
+            Pair(existingSession.get(), false)
+        } else {
+            val newSession = messageSessionRepository.save(MessageSession(customerId = cusId, counselorId = conId))
+            Pair(newSession, true)
+        }
     }
 
     fun getMessages(cusId: Int, conId: Int): List<MessageContent> {
