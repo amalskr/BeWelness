@@ -506,6 +506,7 @@ async function confirmBookingApi(selectedDate, selectedTime) {
 
             if (result.message.includes("Success")) {
                 M.Modal.getInstance(bookingModal).close();
+                loadBookings(userId)
             }
         } else {
             alert(`Booking failed: ${result.message}`);
