@@ -78,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Start chat with counselor
     document.getElementById('chatWithCounselor').addEventListener('click', function () {
-        sendMessageApi("Hi, Dr." + modalCounselorName.value + " My Name is " + fullName + ", " +
-            "I need a counseling from you. Could you help me")
+        sendMessageApi("Hi, Dr." + modalCounselorName.value + " I'm " + fullName + ", and " +
+            "I need a counseling from you. Can we discuss?")
     });
 
     M.Modal.init(bookingModal);
@@ -249,6 +249,9 @@ async function sendMessageApi(msgContent) {
 
             if (result.message.includes("successfully")) {
                 M.Modal.getInstance(bookingModal).close();
+
+                // Redirect to chat.html after successful message sending
+                window.location.href = "/BeWelness/static/chat.html";
             }
         } else {
             alert(`Send Message failed: ${result.message}`);
