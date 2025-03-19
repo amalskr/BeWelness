@@ -141,6 +141,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+//get saved user profile
+function getUserProfile(){
+    const storedProfile = localStorage.getItem('auth_profile');
+    //CUSTOMER, COUNSELLOR
+    return JSON.parse(storedProfile);
+}
+
 // booking update api
 async function updateBooking() {
     // Get the necessary values from the modal
@@ -182,6 +189,28 @@ async function updateBooking() {
     }
 }
 
+function updateStatusOptions() {
+    const statusSelect = document.getElementById("editModalStatus");
+    statusSelect.innerHTML = ""; // Clear existing options
+
+    const profile = getUserProfile()
+
+    if (profile.role === "CUSTOMER") {
+        // Customers can only change to CANCELED
+        statusSelect.innerHTML = `
+                <option value="CANCELED">CANCELED</option>
+            `;
+    } else{
+        // Counselors can change to any status
+        statusSelect.innerHTML = `
+                <option value="CONFIRMED">CONFIRMED</option>
+                <option value="CANCELED">CANCELED</option>
+                <option value="DONE">DONE</option>
+            `;
+    }
+}
+
+
 // open booking edit model with selected item data
 function openBookingModal(element) {
     // Corrected the typo in ID
@@ -200,6 +229,7 @@ function openBookingModal(element) {
         M.Modal.init(modalElement); // Initialize if not already initialized
     }
 
+    updateStatusOptions()
     M.Modal.getInstance(modalElement).open(); // Open the modal
 }
 
