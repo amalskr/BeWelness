@@ -4,14 +4,26 @@ package com.aecs.userservice.service
 import com.aecs.betterwellness.authservice.dto.AuthResponse
 import com.aecs.betterwellness.authservice.dto.LoginResponse
 import com.aecs.betterwellness.authservice.dto.Profile
+import com.aecs.userservice.config.TokenService
 import com.aecs.userservice.model.User
+import com.aecs.userservice.repository.RefreshTokenRepository
 import com.aecs.userservice.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService @Autowired constructor(private val userRepo: UserRepository) {
+class AuthService @Autowired constructor(
+    private val userRepo: UserRepository,
+    private val authManager: AuthenticationManager,
+    private val tokenService: TokenService,
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val userDetailsService: UserDetailsService,
+    private val pwEncoder: PasswordEncoder,
+) {
     //User Register
     fun register(user: User): AuthResponse {
         if (userRepo.findByEmail(user.email).isPresent) {
