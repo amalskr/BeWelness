@@ -41,21 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //UI ACTION
 
-    const myBookings = [
-        {id: 1, counselor: "Dr. John Doe", date: "2025-03-20", time: "10:00 AM"},
-        {id: 2, counselor: "Dr. Alice Brown", date: "2025-03-22", time: "2:00 PM"},
-        {id: 3, counselor: "Dr. Jane Smith", date: "2025-03-25", time: "11:30 AM"},
-        {id: 4, counselor: "Dr. John Doe", date: "2025-03-27", time: "3:00 PM"},
-        {id: 5, counselor: "Dr. Alice Brown", date: "2025-03-29", time: "9:15 AM"},
-        {id: 6, counselor: "Dr. John Doe", date: "2025-04-01", time: "1:00 PM"},
-        {id: 7, counselor: "Dr. Jane Smith", date: "2025-04-03", time: "10:45 AM"},
-        {id: 8, counselor: "Dr. Alice Brown", date: "2025-04-05", time: "4:00 PM"}
-    ];
-
-
     // Populate counselor list
-    const myBookingsList = document.getElementById('myBookingsList');
-    const counselorsList = document.getElementById('counselorList');
     const counselorSelect = document.getElementById('counselorSelect');
     const bookingModal = document.getElementById('bookingModal');
     const dateInput = document.getElementById('appointmentDate');
@@ -110,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    //check valid time for booking
     function validateTimeSelection() {
         const selectedTime = timeInput.value;
         if (selectedTime) {
@@ -120,48 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-
-    // Initialize Materialize Modal
-    //M.Modal.init(bookingModal);
-
-    // Populate Counselors List
-    counselors.forEach(counselor => {
-        let li = document.createElement("li");
-        li.className = "collection-item";
-        li.innerText = counselor.name;
-        li.addEventListener("click", function () {
-            selectedCounselorInput.value = counselor.name; // Set counselor name
-            M.updateTextFields(); // Refresh Materialize input fields
-            M.Modal.getInstance(bookingModal).open(); // Open modal
-        });
-        counselorsList.appendChild(li);
-    });
-
-
-    // Populate My Bookings Section
-    myBookings.forEach(booking => {
-        let li = document.createElement("li");
-        li.className = "collection-item";
-        li.innerHTML = `<strong>${booking.counselor}</strong> <br> ${booking.date} at ${booking.time}`;
-        myBookingsList.appendChild(li);
-    });
-
-    counselors.forEach(counselor => {
-        // Add to left panel
-        let li = document.createElement("li");
-        li.className = "collection-item";
-        li.innerText = counselor.name;
-        counselorsList.appendChild(li);
-
-        // Add to dropdown
-        let option = document.createElement("option");
-        option.value = counselor.id;
-        option.innerText = counselor.name;
-        counselorSelect.appendChild(option);
-    });
-
-    // Initialize Materialize dropdown
-    M.FormSelect.init(counselorSelect);
 
     // Chat functionality
     const chatMessages = document.getElementById('chatMessages');
@@ -193,24 +138,42 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
-    const chatButton = document.getElementById('chatWithCounselor');
-
-    // Chat button click event
-    chatButton.addEventListener("click", function () {
-        const counselorName = selectedCounselorInput.value;
-        if (counselorName) {
-            let confirmChat = confirm(`Do you want to start a chat with ${counselorName}?`);
-            if (confirmChat) {
-                alert(`Chat started with ${counselorName}!`);
-                // Future: Redirect to chat screen or open chat modal
-            }
-        } else {
-            alert("Please select a counselor first!");
-        }
-    });
-
 });
+
+
+// load my bookings
+async function loadBookings(customerId) {
+    try {
+        const response = await fetch(`http://localhost:8090/bookings/customer/${customerId}`);
+        if (!response.ok) throw new Error("Failed to fetch bookings");
+
+        const bookings = await response.json();
+        const bookingsList = document.getElementById('myBookingsList');
+        bookingsList.innerHTML = "";
+
+        bookings.forEach(booking => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('collection-item');
+
+            listItem.innerHTML = `
+                        <div class="booking-info">
+                            <div>
+                                <div class="counselor-name">${booking.counselorName}</div>
+                                <div class="counselor-email">${booking.counselorEmail}</div>
+                            </div>
+                            <div class="session-info">
+                                <div>${booking.sessionDateTime}</div>
+                                <div class="status">${booking.status}</div>
+                            </div>
+                        </div>
+                    `;
+
+            bookingsList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error("Error loading bookings:", error);
+    }
+}
 
 // Send Message
 async function sendMessageApi(counselorName, fullName) {
