@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     M.Modal.init(bookingModal);
 
+    changeVisibility()
 
     if (isCustomer()) {
         fetchCounselors();
@@ -144,6 +145,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+function changeVisibility() {
+
+    const counselorList = document.querySelector(".scrollable-list");
+    const chatUserList = document.querySelector(".chat-user-list");
+
+    if (isCustomer()) {
+        document.getElementById("heading").textContent = "Counselors";
+        counselorList.style.display = "block"; // Show counselor list
+        chatUserList.style.display = "none"; // Hide chat user list
+    } else {
+        document.getElementById("heading").textContent = "Messages";
+        counselorList.style.display = "none"; // Hide counselor list
+        chatUserList.style.display = "block"; // Show chat user list
+    }
+
+}
 
 // booking update api
 async function updateBooking() {
