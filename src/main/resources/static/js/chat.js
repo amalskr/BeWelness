@@ -1,5 +1,16 @@
 //OnLoad WebPage
 document.addEventListener("DOMContentLoaded", async function () {
+
+    //check logged or not
+    const storedProfile = localStorage.getItem('auth_profile');
+
+    // If no email is found, redirect to loginform
+    if (!storedProfile) {
+        window.location.href = '/BeWelness/static/index.html';
+        return;
+    }
+
+    //load chat data and call loadChatHistory
     const chatData = localStorage.getItem('counselor_chat');
     if (chatData) {
         //counID ,counName, cusId
