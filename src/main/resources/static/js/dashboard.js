@@ -186,11 +186,15 @@ async function updateBooking() {
     };
 
     try {
-        const response = await fetch( BASE_URL+'/bookings/update', {
+        const response = await fetch(BASE_URL + '/bookings/update', {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
             body: JSON.stringify(requestBody)
         });
+        accessToken
 
         if (!response.ok) {
             throw new Error('Failed to update booking');
@@ -255,9 +259,9 @@ async function loadBookings(customerId) {
         let apiEndpoint;
 
         if (isCustomer()) {
-            apiEndpoint = BASE_URL+`/bookings/customer/${customerId}`
+            apiEndpoint = BASE_URL + `/bookings/customer/${customerId}`
         } else {
-            apiEndpoint = BASE_URL+`/bookings/counselor/${customerId}`
+            apiEndpoint = BASE_URL + `/bookings/counselor/${customerId}`
         }
 
         console.log('apiEndpoint', apiEndpoint);
@@ -352,7 +356,7 @@ async function loadBookings(customerId) {
 // load all messaged users
 async function fetchMessagedUsers(cusId) {
     try {
-        const response = await fetch(BASE_URL+"message/customers?counselorId=" + cusId);
+        const response = await fetch(BASE_URL + "message/customers?counselorId=" + cusId);
         if (!response.ok) throw new Error("Failed to fetch messaged users");
 
         const users = await response.json();
@@ -417,10 +421,11 @@ async function sendMessageApi(counselorName, fullName) {
     };
 
     try {
-        const response = await fetch(BASE_URL+"/message/send", {
+        const response = await fetch(BASE_URL + "/message/send", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(sendMsgData)
         });
@@ -474,10 +479,11 @@ async function confirmBookingApi(selectedDate, selectedTime) {
     };
 
     try {
-        const response = await fetch(BASE_URL+"/bookings/create", {
+        const response = await fetch(BASE_URL + "/bookings/create", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(bookingData)
         });
@@ -503,7 +509,7 @@ async function confirmBookingApi(selectedDate, selectedTime) {
 //load all Counselors when load the webpage
 async function fetchCounselors() {
     try {
-        const response = await fetch(BASE_URL+"/user/counselors");
+        const response = await fetch(BASE_URL + "/user/counselors");
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
