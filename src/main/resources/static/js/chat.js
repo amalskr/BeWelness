@@ -1,3 +1,5 @@
+const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+
 //OnLoad WebPage
 document.addEventListener("DOMContentLoaded", async function () {
 

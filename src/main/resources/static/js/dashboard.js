@@ -1,3 +1,5 @@
+const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+
 document.addEventListener("DOMContentLoaded", function () {
     // Get email from localStorage
     const storedProfile = localStorage.getItem('auth_profile');

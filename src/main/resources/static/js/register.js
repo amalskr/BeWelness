@@ -1,3 +1,5 @@
+const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+
 document.addEventListener("DOMContentLoaded", function () {
     const registerForm = document.getElementById("registerForm");
     const roleSelect = document.getElementById("role");

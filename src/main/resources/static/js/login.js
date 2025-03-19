@@ -1,9 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
+window.sessionStorage.setItem("BASE_URL","http://localhost:8090")
+const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+
+document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById('loginForm');
     const loginMessage = document.getElementById('loginMessage');
 
+
     if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
+        loginForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
@@ -16,12 +20,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function loginUser(email, password) {
     try {
-        const response = await fetch('http://localhost:8090/auth/login', {
+        const apiUrl = `${BASE_URL}/auth/login`
+        console.log(apiUrl);
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({email, password})
         });
 
         if (!response.ok) {
@@ -42,7 +48,7 @@ async function loginUser(email, password) {
             setTimeout(() => {
                 window.location.href = '/BeWelness/static/dashboard.html';
             }, 1500);
-            
+
         } else {
             document.getElementById('loginMessageErr').innerText = "Login failed. Please check credentials.";
             document.getElementById('loginMessageErr').style.display = 'block';
