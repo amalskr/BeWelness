@@ -53,7 +53,11 @@ async function loadChatHistory(customerId, counselorId) {
 
         messages.forEach(msg => {
             const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', msg.type === 'SENT' ? 'outgoing' : 'incoming');
+            if (isCustomer()) {
+                messageDiv.classList.add('message', msg.type === 'SENT' ? 'outgoing' : 'incoming');
+            } else {
+                messageDiv.classList.add('message', msg.type === 'SENT' ? 'incoming' : 'outgoing');
+            }
             messageDiv.textContent = msg.content;
             chatBox.appendChild(messageDiv);
         });
