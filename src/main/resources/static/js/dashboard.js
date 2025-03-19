@@ -360,7 +360,7 @@ async function loadBookings(customerId) {
 // load all messaged users
 async function fetchMessagedUsers(cusId) {
     try {
-        const response = await fetch(BASE_URL + "message/customers?counselorId=" + cusId, {
+        const response = await fetch(BASE_URL + "/message/customers?counselorId=" + cusId, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

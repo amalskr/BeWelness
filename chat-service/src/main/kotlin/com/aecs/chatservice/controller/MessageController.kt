@@ -57,7 +57,6 @@ class MessageController(private val messageService: MessageSessionService) {
     ): ResponseEntity<List<MessagedCustomer>> {
         val messagedCustomersList = mutableListOf<MessagedCustomer>()
         val jwtToken = getToken(token)
-        println("jwtToken "+jwtToken)
         messageService.getMessagedCustomers(counselorId).forEach {
             val profile = userServiceClient?.getProfile(it, jwtToken)
             profile?.let {
