@@ -18,14 +18,15 @@ class UserServiceClient {
             ?.block()
     }
 
-    fun getProfile(userId: Int): Profile? {
+    fun getProfile(userId: Int, token: String): Profile? {
         return webClient?.get()?.uri("/user/{userId}", userId)
+            ?.headers { it.setBearerAuth(token) }
             ?.retrieve()
             ?.bodyToMono(Profile::class.java)
             ?.block()
     }
 
-    fun getUserProfiles(cusId: Int, conId: Int): ProfileResponse? {
+    fun getUserProfiles(cusId: Int, conId: Int, token: String): ProfileResponse? {
         return webClient?.get()
             ?.uri { builder ->
                 builder.path("/user/profiles")
@@ -33,6 +34,7 @@ class UserServiceClient {
                     .queryParam("counselorId", conId)
                     .build()
             }
+            ?.headers { it.setBearerAuth(token) }
             ?.retrieve()
             ?.bodyToMono(ProfileResponse::class.java)
             ?.block()

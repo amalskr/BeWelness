@@ -51,9 +51,9 @@ class BookingService(private val bookingRepository: BookingRepository) {
     * COUNSELOR (PENDING, CONFIRMED, CANCELED, DONE)
     * CUSTOMER only cancel
     * */
-    fun updateBookingStatus(request: UpdateBookingStatus): HttpStatus {
+    fun updateBookingStatus(request: UpdateBookingStatus, token: String): HttpStatus {
 
-        val profiles = userServiceClient?.getUserProfiles(request.requesterId, request.counselorId)
+        val profiles = userServiceClient?.getUserProfiles(request.requesterId, request.counselorId, token)
         val requester = profiles?.customer?.role
 
         val booking = bookingRepository.findById(request.bookingId)
@@ -89,12 +89,12 @@ class BookingService(private val bookingRepository: BookingRepository) {
 
 
     // get all Customer bookings
-    fun getBookingsByCustomer(cusId: Int): List<CustomerBooking> {
+    fun getBookingsByCustomer(cusId: Int, token: String): List<CustomerBooking> {
         val bookings = bookingRepository.findByUserId(cusId)
 
         return bookings.sortedBy { it.sessionDateTime } // sortedByDescending
             .map { booking ->
-                val profile = userServiceClient?.getProfile(booking.counselorId)
+                val profile = userServiceClient?.getProfile(booking.counselorId, token)
 
                 CustomerBooking(
                     id = booking.id,
@@ -108,11 +108,11 @@ class BookingService(private val bookingRepository: BookingRepository) {
     }
 
     // get all Counselor bookings
-    fun getBookingsByCounselor(conId: Int): List<CounselorBooking> {
+    fun getBookingsByCounselor(conId: Int, token: String): List<CounselorBooking> {
         val bookings = bookingRepository.findByCounselorId(conId)
 
         return bookings.map { booking ->
-            val profile = userServiceClient?.getProfile(booking.userId)
+            val profile = userServiceClient?.getProfile(booking.userId, token)
 
             CounselorBooking(
                 id = booking.id,
