@@ -18,51 +18,27 @@
 <!-- Top Bar -->
 <div class="navbar blue darken-2">
     <div class="container">
-        <span class="brand-logo left white-text">👋 Hi, <span id="profileName"></span> | <span id="userEmail"></span> </span>
+        <span class="brand-logo left white-text">👋 Hi, <span id="profileName"></span> | <span
+                id="userEmail"></span> </span>
         <button id="logoutBtn" class="btn red right">Logout</button>
     </div>
 </div>
 
 <div class="container">
-    <div class="row">
-        <!-- Left Panel: Scrollable Counselors List & My Bookings -->
-        <div class="col s4">
+    <div class="row dashboard-container">
+        <!-- Left Panel: Counselors List -->
+        <div class="col s4 left-panel">
             <h5>Counselors</h5>
             <div class="scrollable-list">
-                <ul id="counselorList" class="collection">
-                </ul>
-            </div>
-
-            <!-- My Bookings Section -->
-            <h5>My Bookings</h5>
-            <div class="my-bookings-container">
-                <ul id="myBookingsList" class="collection red-text">
-                    <!-- User's booked appointments dynamically added here -->
-                </ul>
+                <ul id="counselorList" class="collection"></ul>
             </div>
         </div>
 
-        <!-- Right Panel: Chat Area -->
-        <div class="col s8">
-            <h5>Chat</h5>
-
-            <!-- Counselor Selection -->
-            <div class="input-field">
-                <select id="counselorSelect">
-                    <option value="" disabled selected>Select a Counselor</option>
-                    <!-- Counselors will be dynamically inserted here -->
-                </select>
-            </div>
-
-            <!-- Chat Messages -->
-            <div id="chatMessages" class="card-panel chat-box">
-                <!-- Messages will be dynamically inserted here -->
-            </div>
-
-            <!-- Message Input -->
-            <div class="input-field">
-                <input type="text" id="messageInput" placeholder="Type a message...">
-                <button id="sendMessageBtn" class="btn blue darken-2">Send</button>
+        <!-- Right Panel: Bookings Display -->
+        <div class="col s8 right-panel">
+            <h5>My Bookings</h5>
+            <div class="my-bookings-container">
+                <ul id="myBookingsList" class="collection red-text"></ul>
             </div>
         </div>
     </div>

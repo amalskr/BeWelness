@@ -2,80 +2,69 @@ body {
     background-color: #f5f5f5;
     padding-top: 50px;
 }
-
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
 }
-
 .container {
     margin-top: 50px;
 }
-
-.chat-box {
-    height: 300px;
-    overflow-y: auto;
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.input-field {
-    margin-top: 10px;
-}
-
 .modal {
-    overflow: visible !important; /* Ensure elements inside modal are visible */
+    overflow: visible !important;
 }
-
 .modal-content {
-    overflow: visible !important; /* Prevent content from being cut off */
+    overflow: visible !important;
 }
-
 .datepicker-container {
-    z-index: 10000 !important; /* Bring the date picker to the top */
+    z-index: 10000 !important;
 }
-
 /* Scrollable Counselors List */
 .scrollable-list {
-    max-height: 200px; /* Adjust height as needed */
-    overflow-y: auto; /* Enable vertical scrolling */
-    border: 1px solid #ddd; /* Optional: Border for better visibility */
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
 }
-
 /* My Bookings Section */
 .my-bookings-container {
     max-height: 200px;
     overflow-y: auto;
-    background: #ffebee; /* Light red background */
+    background: #ffebee;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ff5252; /* Red border */
+    border: 1px solid #ff5252;
 }
-
 .my-bookings-container ul {
     list-style-type: none;
     padding: 0;
 }
-
 .my-bookings-container .collection-item {
-    color: #d32f2f; /* Dark red text */
+    color: #d32f2f;
 }
-
-
-
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
 }
-
 .chat-btn {
     font-size: 12px;
     padding: 5px 10px;
     margin-right: 5px;
+}
+/* Split Dashboard */
+.dashboard-container {
+    display: flex;
+    gap: 20px;
+}
+.left-panel, .right-panel {
+    flex: 1;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
