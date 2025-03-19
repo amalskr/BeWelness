@@ -79,10 +79,16 @@ async function sendMessage() {
 
     if (messageText !== '') {
         try {
+            let msgType
+            if(isCustomer()){
+                msgType = "SENT";
+            }else{
+                msgType = "REPLY";
+            }
             const response = await fetch('http://localhost:8090/message/send', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({customerId, counselorId, content: messageText, type: "SENT"})
+                body: JSON.stringify({customerId, counselorId, content: messageText, type: msgType})
             });
 
             if (!response.ok) throw new Error("Failed to send message");
