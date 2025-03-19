@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         try {
-            const response = await fetch("http://localhost:8090/auth/register", {
+            const response = await fetch(BASE_URL+"/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 //Load Chat history
 async function loadChatHistory(customerId, counselorId) {
     try {
-        const response = await fetch(`http://localhost:8090/message/list?customerId=${customerId}&counselorId=${counselorId}`);
+        const response = await fetch(BASE_URL+`/message/list?customerId=${customerId}&counselorId=${counselorId}`);
         if (!response.ok) throw new Error("Failed to fetch chat history");
 
         const messages = await response.json();
@@ -87,7 +87,7 @@ async function sendMessage() {
             }else{
                 msgType = "REPLY";
             }
-            const response = await fetch('http://localhost:8090/message/send', {
+            const response = await fetch(BASE_URL+'/message/send', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({customerId, counselorId, content: messageText, type: msgType})
