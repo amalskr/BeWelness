@@ -7,6 +7,7 @@ import com.aecs.chatservice.model.MessageContent
 import com.aecs.chatservice.service.MessageSessionService
 import com.aecs.chatservice.service.UserServiceClient
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -50,10 +51,15 @@ class MessageController(private val messageService: MessageSessionService) {
     }
 
     @GetMapping("/customers")
-    fun getMessagedCustomers(@RequestParam counselorId: Int): ResponseEntity<List<MessagedCustomer>> {
+    fun getMessagedCustomers(
+        @RequestParam counselorId: Int,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) token: String
+    ): ResponseEntity<List<MessagedCustomer>> {
         val messagedCustomersList = mutableListOf<MessagedCustomer>()
+        val jwtToken = getToken(token)
+        println("jwtToken "+jwtToken)
         messageService.getMessagedCustomers(counselorId).forEach {
-            val profile = userServiceClient?.getProfile(it)
+            val profile = userServiceClient?.getProfile(it, jwtToken)
             profile?.let {
                 val fullName = it.firstName + " " + it.lastName
                 val msgCus = MessagedCustomer(profile.id, fullName)
@@ -62,5 +68,9 @@ class MessageController(private val messageService: MessageSessionService) {
         }
 
         return ResponseEntity.ok(messagedCustomersList)
+    }
+
+    private fun getToken(token: String): String {
+        return token.removePrefix("Bearer ")
     }
 }
