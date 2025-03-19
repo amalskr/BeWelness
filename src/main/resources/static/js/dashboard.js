@@ -153,12 +153,12 @@ function changeVisibility() {
 
     if (isCustomer()) {
         document.getElementById("heading").textContent = "Counselors";
-        counselorList.style.display = "block"; // Show counselor list
-        chatUserList.style.display = "none"; // Hide chat user list
+        counselorList.style.display = "block";
+        chatUserList.style.display = "none";
     } else {
         document.getElementById("heading").textContent = "Messages";
-        counselorList.style.display = "none"; // Hide counselor list
-        chatUserList.style.display = "block"; // Show chat user list
+        counselorList.style.display = "none";
+        chatUserList.style.display = "block";
     }
 
 }
@@ -372,7 +372,17 @@ async function fetchMessagedUsers(cusId) {
         // Add event listener to show alert on selection
         dropdown.addEventListener("change", function () {
             if (this.value) {
-                alert(`Selected Customer ID: ${this.value}`);
+                let userId = this.value
+                let selectedUser = users.find(user => user.cusId == userId);
+
+                localStorage.setItem('counselor_chat', JSON.stringify({
+                    counID: getUserProfile().id,
+                    counName: selectedUser.fullName,
+                    cusId: userId
+                }));
+                // Redirect to chat.html after successful message sending
+                window.location.href = "/BeWelness/static/chat.html";
+
             }
         });
 
