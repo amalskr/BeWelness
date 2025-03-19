@@ -95,11 +95,33 @@ body {
 .session-info {
     text-align: right;
 }
-.status {
+/*.status {
     font-size: 12px;
     font-weight: bold;
     color: red;
+}*/
+
+.status {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
 }
+
+.status-pending {
+    color: #ff9800; /* Orange */
+}
+.status-confirmed {
+    color: #4caf50; /* Green */
+}
+.status-canceled {
+    color: #f44336; /* Red */
+}
+.status-done {
+    color: #2196f3; /* Blue */
+}
+
 .modal-content {
     display: flex;
     flex-direction: column;

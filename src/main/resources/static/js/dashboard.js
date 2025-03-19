@@ -223,6 +223,25 @@ async function loadBookings(customerId) {
             listItem.setAttribute('data-session-date', booking.sessionDateTime);
             listItem.setAttribute('data-status', booking.status);
 
+            // Map status to class
+            let statusClass = "";
+            switch (booking.status) {
+                case "PENDING":
+                    statusClass = "status-pending";
+                    break;
+                case "CONFIRMED":
+                    statusClass = "status-confirmed";
+                    break;
+                case "CANCELED":
+                    statusClass = "status-canceled";
+                    break;
+                case "DONE":
+                    statusClass = "status-done";
+                    break;
+                default:
+                    statusClass = "";
+            }
+
             listItem.innerHTML = `
                         <div class="booking-info">
                             <div>
@@ -231,7 +250,7 @@ async function loadBookings(customerId) {
                             </div>
                             <div class="session-info">
                                 <div>${booking.sessionDateTime}</div>
-                                <div class="status">${booking.status}</div>
+                                <div class="status ${statusClass}">${booking.status}</div>
                             </div>
                         </div>
                     `;
