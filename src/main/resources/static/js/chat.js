@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+    // Display user profile name in the dashboard
+    const profile = JSON.parse(storedProfile);
+    let fullName = profile.firstName + " " + profile.lastName;
+    document.getElementById('profileName').innerText = fullName;
+    document.getElementById('userEmail').innerText = profile.email
+
     //load chat data and call loadChatHistory
     const chatData = localStorage.getItem('counselor_chat');
     if (chatData) {
