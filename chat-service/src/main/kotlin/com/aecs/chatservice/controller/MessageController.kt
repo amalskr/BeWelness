@@ -1,6 +1,7 @@
 package com.aecs.chatservice.controller
 
 import com.aecs.chatservice.dto.MessageResponse
+import com.aecs.chatservice.dto.MessagedCustomer
 import com.aecs.chatservice.dto.SendMessage
 import com.aecs.chatservice.model.MessageContent
 import com.aecs.chatservice.service.MessageSessionService
@@ -49,13 +50,17 @@ class MessageController(private val messageService: MessageSessionService) {
     }
 
     @GetMapping("/customers")
-    fun getMessagedCustomers(@RequestParam counselorId: Int): ResponseEntity<List<Int>> {
-
+    fun getMessagedCustomers(@RequestParam counselorId: Int): ResponseEntity<List<MessagedCustomer>> {
+        val messagedCustomersList = mutableListOf<MessagedCustomer>()
         messageService.getMessagedCustomers(counselorId).forEach {
-            val profiles = userServiceClient?.getProfile(it)
-            println("myProfile: $it :: ${profiles?.email}")
+            val profile = userServiceClient?.getProfile(it)
+            profile?.let {
+                val fullName = it.firstName + " " + it.lastName
+                val msgCus = MessagedCustomer(profile.id, fullName)
+                messagedCustomersList.add(msgCus)
+            }
         }
 
-        return ResponseEntity.ok(emptyList())
+        return ResponseEntity.ok(messagedCustomersList)
     }
 }

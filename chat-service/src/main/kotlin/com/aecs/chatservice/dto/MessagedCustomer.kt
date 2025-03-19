@@ -1,3 +1,3 @@
 package com.aecs.chatservice.dto
 
-data class MessagedCustomer(val code: Int, val message: String)
+data class MessagedCustomer(val cusId: Int, val fullName: String)
