@@ -184,7 +184,7 @@ async function updateBooking() {
     };
 
     try {
-        const response = await fetch('http://localhost:8090/bookings/update', {
+        const response = await fetch( BASE_URL+'/bookings/update', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestBody)
@@ -253,9 +253,9 @@ async function loadBookings(customerId) {
         let apiEndpoint;
 
         if (isCustomer()) {
-            apiEndpoint = `http://localhost:8090/bookings/customer/${customerId}`
+            apiEndpoint = BASE_URL+`/bookings/customer/${customerId}`
         } else {
-            apiEndpoint = `http://localhost:8090/bookings/counselor/${customerId}`
+            apiEndpoint = BASE_URL+`/bookings/counselor/${customerId}`
         }
 
         console.log('apiEndpoint', apiEndpoint);
@@ -350,7 +350,7 @@ async function loadBookings(customerId) {
 // load all messaged users
 async function fetchMessagedUsers(cusId) {
     try {
-        const response = await fetch("http://localhost:8090/message/customers?counselorId=" + cusId);
+        const response = await fetch(BASE_URL+"message/customers?counselorId=" + cusId);
         if (!response.ok) throw new Error("Failed to fetch messaged users");
 
         const users = await response.json();
@@ -415,7 +415,7 @@ async function sendMessageApi(counselorName, fullName) {
     };
 
     try {
-        const response = await fetch('http://localhost:8090/message/send', {
+        const response = await fetch(BASE_URL+"/message/send", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -472,7 +472,7 @@ async function confirmBookingApi(selectedDate, selectedTime) {
     };
 
     try {
-        const response = await fetch('http://localhost:8090/bookings/create', {
+        const response = await fetch(BASE_URL+"/bookings/create", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -501,7 +501,7 @@ async function confirmBookingApi(selectedDate, selectedTime) {
 //load all Counselors when load the webpage
 async function fetchCounselors() {
     try {
-        const response = await fetch('http://localhost:8090/user/counselors');
+        const response = await fetch(BASE_URL+"/user/counselors");
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
