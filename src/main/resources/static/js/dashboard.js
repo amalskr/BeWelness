@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const profile = JSON.parse(storedProfile);
     let fullName = profile.firstName + " " + profile.lastName;
 
-
     // Display user profile name in the dashboard
     document.getElementById('profileName').innerText = fullName;
     document.getElementById('userEmail').innerText = profile.email
@@ -69,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     M.Modal.init(bookingModal);
     fetchCounselors();
+    loadBookings(profile.id)
 
     // Calculate today's date and max selectable date (1 month from today)
     const today = new Date();
