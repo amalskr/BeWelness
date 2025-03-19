@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         //counID ,counName, cusId
         const chatInfo = JSON.parse(chatData);
         document.getElementById('counselorName').textContent = `Chat with Dr.${chatInfo.counName}`;
+
         await loadChatHistory(chatInfo.cusId,chatInfo.counID);
     }
 });
@@ -43,7 +44,37 @@ async function loadChatHistory(customerId,counselorId) {
     }
 }
 
+async function sendMessage() {
+    const chatData = localStorage.getItem('counselor_chat');
+    const chatInfo = JSON.parse(chatData);
+    const customerId = chatInfo.cusId
+    const counselorId = chatInfo.counID
+
+    alert("myMessage "+customerId +counselorId)
+
+    const input = document.getElementById('message');
+    const messageText = input.value.trim();
+
+    if (messageText !== '') {
+        try {
+            const response = await fetch('http://localhost:8090/message/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerId, counselorId, content: messageText, type: "SENT" })
+            });
+
+            if (!response.ok) throw new Error("Failed to send message");
+
+            input.value = '';
+            await loadChatHistory(customerId); // Reload chat history on success
+        } catch (error) {
+            console.error("Error sending message:", error);
+        }
+    }
+}
+
 //Send Message Api
+/*
 function sendMessage() {
     const input = document.getElementById('message');
     const chatBox = document.getElementById('chatBox');
@@ -57,4 +88,4 @@ function sendMessage() {
         chatBox.scrollTop = chatBox.scrollHeight;
         input.value = '';
     }
-}
+}*/
