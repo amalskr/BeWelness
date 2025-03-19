@@ -1,4 +1,4 @@
-window.sessionStorage.setItem("BASE_URL","http://localhost:8090")
+window.sessionStorage.setItem("BASE_URL", "http://localhost:8090")
 const BASE_URL = window.sessionStorage.getItem("BASE_URL");
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loginUser(email, password) {
     try {
-        const response = await fetch(BASE_URL+"/auth/login", {
+        const response = await fetch(BASE_URL + "/auth/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,10 +42,11 @@ async function loginUser(email, password) {
 
             //save data
             localStorage.setItem('auth_profile', JSON.stringify(data.profile));
+            localStorage.setItem('access_token', data.accessToken);
 
             setTimeout(() => {
                 window.location.href = '/BeWelness/static/dashboard.html';
-            }, 1500);
+            }, 1000);
 
         } else {
             document.getElementById('loginMessageErr').innerText = "Login failed. Please check credentials.";
