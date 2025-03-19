@@ -188,7 +188,7 @@ function openBookingModal(element) {
     document.getElementById('editModalCounselorId').value = element.getAttribute('data-counselor-id');
     document.getElementById('editModalCounselorName').textContent = element.getAttribute('data-counselor-name');
     document.getElementById('editModalCounselorEmail').textContent = element.getAttribute('data-counselor-email');
-    document.getElementById('editModalSessionDateTime').value = element.getAttribute('data-session-date');
+    document.getElementById('editModalSessionDateTime').textContent = element.getAttribute('data-session-date');
     document.getElementById('editModalStatus').value = element.getAttribute('data-status');
 
     // Ensure modal is properly initialized
@@ -225,7 +225,7 @@ async function loadBookings(customerId) {
             listItem.innerHTML = `
                         <div class="booking-info">
                             <div>
-                                <div class="counselor-name">${booking.counselorName}</div>
+                                <div class="counselor-name">Dr. ${booking.counselorName}</div>
                                 <div class="counselor-email">${booking.counselorEmail}</div>
                             </div>
                             <div class="session-info">
@@ -350,7 +350,6 @@ async function confirmBookingApi(selectedDate, selectedTime) {
         alert("An error occurred while booking. Please try again.");
     }
 }
-
 
 //load all Counselors when load the webpage
 async function fetchCounselors() {
