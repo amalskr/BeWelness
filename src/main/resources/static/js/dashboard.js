@@ -1,4 +1,5 @@
 const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+const accessToken = localStorage.getItem('access_token');
 
 document.addEventListener("DOMContentLoaded", function () {
     // Get email from localStorage
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Logout button functionality
     document.getElementById('logoutBtn').addEventListener('click', function () {
         localStorage.removeItem('auth_profile');
+        localStorage.removeItem('access_token');
 
         // Prevent back button navigation
         history.pushState(null, null, window.location.href);

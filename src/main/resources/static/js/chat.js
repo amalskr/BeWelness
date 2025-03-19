@@ -1,4 +1,5 @@
 const BASE_URL = window.sessionStorage.getItem("BASE_URL");
+const accessToken = localStorage.getItem('access_token');
 
 //OnLoad WebPage
 document.addEventListener("DOMContentLoaded", async function () {
