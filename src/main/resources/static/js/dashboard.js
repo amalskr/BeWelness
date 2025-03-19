@@ -78,8 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Start chat with counselor
     document.getElementById('chatWithCounselor').addEventListener('click', function () {
-        sendMessageApi("Hi, Dr." + modalCounselorName.value + " I'm " + fullName + ", and " +
-            "I need a counseling from you. Can we discuss?")
+        sendMessageApi(modalCounselorName.value, fullName)
     });
 
     M.Modal.init(bookingModal);
@@ -214,9 +213,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Send Message
-async function sendMessageApi(msgContent) {
+async function sendMessageApi(counselorName, fullName) {
     const storedProfile = localStorage.getItem('auth_profile');
     const profile = JSON.parse(storedProfile);
+    const msgContent = "Hi, Dr." + counselorName + " I'm " + fullName + ", and " +
+        "I need a counseling from you. Can we discuss?"
 
     const userId = profile.id
     const counselorId = document.getElementById('modalCounselorId').value;
@@ -248,6 +249,9 @@ async function sendMessageApi(msgContent) {
             alert(result.message);
 
             if (result.message.includes("successfully")) {
+
+                localStorage.setItem('counselor_chat', JSON.stringify({id: counselorId, name: counselorName}));
+
                 M.Modal.getInstance(bookingModal).close();
 
                 // Redirect to chat.html after successful message sending
