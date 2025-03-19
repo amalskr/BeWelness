@@ -250,7 +250,7 @@ async function sendMessageApi(counselorName, fullName) {
 
             if (result.message.includes("successfully")) {
 
-                localStorage.setItem('counselor_chat', JSON.stringify({id: counselorId, name: counselorName}));
+                localStorage.setItem('counselor_chat', JSON.stringify({counID: counselorId, counName: counselorName,cusId: userId}));
 
                 M.Modal.getInstance(bookingModal).close();
 

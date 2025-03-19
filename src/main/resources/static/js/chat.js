@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     const chatData = localStorage.getItem('counselor_chat');
     if (chatData) {
+        //counID ,counName, cusId
         const chatInfo = JSON.parse(chatData);
-        document.getElementById('counselorName').textContent = `Chat with Dr.${chatInfo.name}`;
+        document.getElementById('counselorName').textContent = `Chat with Dr.${chatInfo.counName}`;
     }
 });
 
