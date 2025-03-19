@@ -22,9 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Prevent back button navigation
         history.pushState(null, null, window.location.href);
-        window.onpopstate = function () {
-            history.go(1);
-        };
+        window.history.back();
 
         // Redirect to login page
         window.location.href = '/BeWelness/static/index.html';
@@ -68,7 +66,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     M.Modal.init(bookingModal);
-    fetchCounselors();
+
+    console.log(profile.role)
+    console.log(isCustomer())
+    if (isCustomer()) {
+        fetchCounselors();
+    }
+
     loadBookings(profile.id)
 
     // Calculate today's date and max selectable date (1 month from today)
@@ -141,13 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-//get saved user profile
-function getUserProfile(){
-    const storedProfile = localStorage.getItem('auth_profile');
-    //CUSTOMER, COUNSELLOR
-    return JSON.parse(storedProfile);
-}
-
 // booking update api
 async function updateBooking() {
     // Get the necessary values from the modal
@@ -170,7 +167,7 @@ async function updateBooking() {
     try {
         const response = await fetch('http://localhost:8090/bookings/update', {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestBody)
         });
 
@@ -193,14 +190,12 @@ function updateStatusOptions() {
     const statusSelect = document.getElementById("editModalStatus");
     statusSelect.innerHTML = ""; // Clear existing options
 
-    const profile = getUserProfile()
-
-    if (profile.role === "CUSTOMER") {
+    if (isCustomer()) {
         // Customers can only change to CANCELED
         statusSelect.innerHTML = `
                 <option value="CANCELED">CANCELED</option>
             `;
-    } else{
+    } else {
         // Counselors can change to any status
         statusSelect.innerHTML = `
                 <option value="CONFIRMED">CONFIRMED</option>
@@ -236,7 +231,17 @@ function openBookingModal(element) {
 // load my bookings
 async function loadBookings(customerId) {
     try {
-        const response = await fetch(`http://localhost:8090/bookings/customer/${customerId}`);
+        let apiEndpoint;
+
+        if (isCustomer()) {
+            apiEndpoint = `http://localhost:8090/bookings/customer/${customerId}`
+        } else {
+            apiEndpoint = `http://localhost:8090/bookings/counselor/${customerId}`
+        }
+
+        console.log('apiEndpoint', apiEndpoint);
+
+        const response = await fetch(apiEndpoint);
         if (!response.ok) throw new Error("Failed to fetch bookings");
 
         const bookings = await response.json();
@@ -247,11 +252,21 @@ async function loadBookings(customerId) {
             const listItem = document.createElement('li');
             listItem.classList.add('collection-item');
             listItem.setAttribute('data-id', booking.id);
-            listItem.setAttribute('data-counselor-id', booking.conId);
-            listItem.setAttribute('data-counselor-name', booking.counselorName);
-            listItem.setAttribute('data-counselor-email', booking.counselorEmail);
+
+            if (isCustomer()) {
+                listItem.setAttribute('data-counselor-id', booking.conId);
+                listItem.setAttribute('data-counselor-name', booking.counselorName);
+                listItem.setAttribute('data-counselor-email', booking.counselorEmail);
+            } else {
+                listItem.setAttribute('data-counselor-id', booking.cusId);
+                listItem.setAttribute('data-counselor-name', booking.customerName);
+                listItem.setAttribute('data-counselor-email', booking.customerEmail);
+            }
+
             listItem.setAttribute('data-session-date', booking.sessionDateTime);
             listItem.setAttribute('data-status', booking.status);
+
+            console.log(listItem);
 
             // Map status to class
             let statusClass = "";
@@ -272,7 +287,8 @@ async function loadBookings(customerId) {
                     statusClass = "";
             }
 
-            listItem.innerHTML = `
+            if (isCustomer()) {
+                listItem.innerHTML = `
                         <div class="booking-info">
                             <div>
                                 <div class="counselor-name">Dr. ${booking.counselorName}</div>
@@ -284,6 +300,21 @@ async function loadBookings(customerId) {
                             </div>
                         </div>
                     `;
+            } else {
+                listItem.innerHTML = `
+                        <div class="booking-info">
+                            <div>
+                                <div class="counselor-name">${booking.customerName}</div>
+                                <div class="counselor-email">${booking.customerEmail}</div>
+                            </div>
+                            <div class="session-info">
+                                <div>${booking.sessionDateTime}</div>
+                                <div class="status ${statusClass}">${booking.status}</div>
+                            </div>
+                        </div>
+                    `;
+            }
+
 
             // Attach click event to open the modal
             listItem.addEventListener("click", function () {
@@ -335,7 +366,11 @@ async function sendMessageApi(counselorName, fullName) {
 
             if (result.message.includes("successfully")) {
 
-                localStorage.setItem('counselor_chat', JSON.stringify({counID: counselorId, counName: counselorName,cusId: userId}));
+                localStorage.setItem('counselor_chat', JSON.stringify({
+                    counID: counselorId,
+                    counName: counselorName,
+                    cusId: userId
+                }));
 
                 M.Modal.getInstance(bookingModal).close();
 
@@ -448,15 +483,28 @@ async function fetchCounselors() {
 // Function to get counseling type label by value
 function getCounselingTypeLabel(value) {
     const counselingTypes = [
-        { label: "Mental Health Counseling", value: "MHC" },
-        { label: "Marriage and family counseling", value: "MF" },
-        { label: "Rehabilitation counseling", value: "RC" },
-        { label: "Couples counseling", value: "CC" },
-        { label: "Addiction counseling", value: "AC" },
-        { label: "Humanistic counseling", value: "HC" },
-        { label: "Substance abuse counseling", value: "SAC" }
+        {label: "Mental Health Counseling", value: "MHC"},
+        {label: "Marriage and family counseling", value: "MF"},
+        {label: "Rehabilitation counseling", value: "RC"},
+        {label: "Couples counseling", value: "CC"},
+        {label: "Addiction counseling", value: "AC"},
+        {label: "Humanistic counseling", value: "HC"},
+        {label: "Substance abuse counseling", value: "SAC"}
     ];
 
     const type = counselingTypes.find(type => type.value === value);
     return type ? type.label : value; // Return label if found, otherwise return the original value
+}
+
+//get saved user profile
+function getUserProfile() {
+    const storedProfile = localStorage.getItem('auth_profile');
+    //CUSTOMER, COUNSELLOR
+    return JSON.parse(storedProfile);
+}
+
+// Get saved user profile and check if the user is a CUSTOMER
+function isCustomer() {
+    const prof = getUserProfile(); // Ensure function is called
+    return prof && prof.role === "CUSTOMER"; // Check if profile exists and role is CUSTOMER
 }
