@@ -264,9 +264,13 @@ async function loadBookings(customerId) {
             apiEndpoint = BASE_URL + `/bookings/counselor/${customerId}`
         }
 
-        console.log('apiEndpoint', apiEndpoint);
-
-        const response = await fetch(apiEndpoint);
+        const response = await fetch(apiEndpoint, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         if (!response.ok) throw new Error("Failed to fetch bookings");
 
         const bookings = await response.json();
@@ -356,7 +360,14 @@ async function loadBookings(customerId) {
 // load all messaged users
 async function fetchMessagedUsers(cusId) {
     try {
-        const response = await fetch(BASE_URL + "message/customers?counselorId=" + cusId);
+        const response = await fetch(BASE_URL + "message/customers?counselorId=" + cusId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
         if (!response.ok) throw new Error("Failed to fetch messaged users");
 
         const users = await response.json();
@@ -509,7 +520,14 @@ async function confirmBookingApi(selectedDate, selectedTime) {
 //load all Counselors when load the webpage
 async function fetchCounselors() {
     try {
-        const response = await fetch(BASE_URL + "/user/counselors");
+        const response = await fetch(BASE_URL + "/user/counselors", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
