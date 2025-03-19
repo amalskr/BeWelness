@@ -47,7 +47,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 //Load Chat history
 async function loadChatHistory(customerId, counselorId) {
     try {
-        const response = await fetch(BASE_URL+`/message/list?customerId=${customerId}&counselorId=${counselorId}`);
+        const response = await fetch(BASE_URL+`/message/list?customerId=${customerId}&counselorId=${counselorId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
         if (!response.ok) throw new Error("Failed to fetch chat history");
 
         const messages = await response.json();
@@ -90,7 +97,10 @@ async function sendMessage() {
             }
             const response = await fetch(BASE_URL+'/message/send', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
                 body: JSON.stringify({customerId, counselorId, content: messageText, type: msgType})
             });
 
