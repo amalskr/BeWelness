@@ -3,10 +3,12 @@ package com.aecs.chatservice.controller
 import com.aecs.chatservice.dto.MessageResponse
 import com.aecs.chatservice.dto.SendMessage
 import com.aecs.chatservice.model.MessageContent
+import com.aecs.chatservice.model.MessageSession
 import com.aecs.chatservice.service.MessageSessionService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/message")
@@ -41,5 +43,10 @@ class MessageController(private val messageService: MessageSessionService) {
         @RequestParam counselorId: Int
     ): ResponseEntity<List<MessageContent>> {
         return ResponseEntity.ok(messageService.getMessages(customerId, counselorId))
+    }
+
+    @GetMapping("/customers")
+    fun getMessagedCustomers(@RequestParam counselorId: Int): ResponseEntity<List<Int>> {
+        return ResponseEntity.ok(messageService.getMessagedCustomers(counselorId))
     }
 }

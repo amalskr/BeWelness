@@ -7,6 +7,7 @@ import com.aecs.chatservice.repository.MessageContentRepository
 import com.aecs.chatservice.repository.MessageSessionRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class MessageSessionService(
@@ -42,5 +43,10 @@ class MessageSessionService(
             .orElseThrow { RuntimeException("No messages found") }
 
         return messageContentRepository.findByMessageSession(session)
+    }
+
+    fun getMessagedCustomers(conId: Int): List<Int> {
+        val sessionList = messageSessionRepository.findAllCustomerIdsByCounselorId(conId)
+        return sessionList
     }
 }
