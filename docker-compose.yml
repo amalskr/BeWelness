@@ -1,5 +1,8 @@
+version: '3.8'
+
 services:
   user-service:
+    container_name: user-service
     image: amalskr/bewellness:user-service
     ports:
       - "8081:8081"
@@ -7,8 +10,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/bw_user
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - bewellness-net
 
   chat-service:
+    container_name: chat-service
     image: amalskr/bewellness:chat-service
     ports:
       - "8082:8082"
@@ -16,8 +22,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/bw_chat
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - bewellness-net
 
   booking-service:
+    container_name: booking-service
     image: amalskr/bewellness:booking-service
     ports:
       - "8083:8083"
@@ -25,10 +34,36 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/bw_booking
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - bewellness-net
 
   api-gateway:
+    container_name: api-gateway
     image: amalskr/bewellness:api-gateway
     ports:
       - "8090:8090"
+    depends_on:
+      - user-service
+      - chat-service
+      - booking-service
     environment:
-      GATEWAY_ROUTE_TIMEOUT: 30s
+      SPRING_APPLICATION_NAME: gateway
+      SERVER_PORT: 8090
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_ID: user-service
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://user-service:8081
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]: Path=/auth/**,/user/**
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_ID: chat-service
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_URI: http://chat-service:8082
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]: Path=/message/**
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_ID: booking-service
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_URI: http://booking-service:8083
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]: Path=/bookings/**
+      SPRING_CLOUD_GATEWAY_GLOBALCORS_CORS-CONFIGURATIONS_[/**]_ALLOWEDORIGINS: "*"
+      SPRING_CLOUD_GATEWAY_GLOBALCORS_CORS-CONFIGURATIONS_[/**]_ALLOWEDMETHODS: "GET,POST,PUT,DELETE"
+      SPRING_CLOUD_GATEWAY_GLOBALCORS_CORS-CONFIGURATIONS_[/**]_ALLOWEDHEADERS: "*"
+    networks:
+      - bewellness-net
+
+networks:
+  bewellness-net:
+    driver: bridge
