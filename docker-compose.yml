@@ -35,9 +35,9 @@ services:
     networks:
       - bewellness-net
 
-  api-gateway:
-    container_name: api-gateway
-    image: amalskr/bewellness:api-gateway
+  gateway:
+    container_name: gateway
+    image: amalskr/bewellness:gateway
     ports:
       - "8090:8090"
     depends_on:

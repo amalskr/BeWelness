@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 
 @Service
-class UserServiceClient {
-    @Autowired
-    private val webClient: WebClient? = null
+class UserServiceClient(private val webClient: WebClient) {
 
     fun getUserEmail(userId: Int): String? {
         return webClient?.get()?.uri("/user/{userId}", userId)
