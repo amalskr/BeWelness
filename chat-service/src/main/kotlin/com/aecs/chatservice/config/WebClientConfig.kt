@@ -9,7 +9,7 @@ class WebClientConfig {
     @Bean
     fun webClient(): WebClient {
         return WebClient.builder()
-            .baseUrl("http://api-gateway:8090") //8081 = userServer Port
+            .baseUrl("http://localhost:8081") //8081 = userServer Port
             .build()
     }
 }
