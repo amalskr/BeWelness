@@ -54,8 +54,7 @@ class SecurityConfig {
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("auth/**")
-                    .permitAll()
+                    .requestMatchers("auth/**","/actuator/**").permitAll()
                     .requestMatchers("/user/**", "message/**", "bookings/**")
                     .hasAnyRole(Role.CUSTOMER.toString(), Role.COUNSELLOR.toString())
                     .anyRequest()
