@@ -56,4 +56,9 @@ class MessageSessionService(
         val sessionList = messageSessionRepository.findAllCustomerIdsByCounselorId(conId)
         return sessionList
     }
+
+    fun getAllSessions(): MutableList<MessageSession> {
+        val sessions = messageSessionRepository.findAll()
+        return sessions
+    }
 }

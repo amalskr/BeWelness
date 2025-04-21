@@ -4,6 +4,7 @@ import com.aecs.chatservice.dto.MessageResponse
 import com.aecs.chatservice.dto.MessagedCustomer
 import com.aecs.chatservice.dto.SendMessage
 import com.aecs.chatservice.model.MessageContent
+import com.aecs.chatservice.model.MessageSession
 import com.aecs.chatservice.service.MessageSessionService
 import com.aecs.chatservice.service.UserServiceClient
 import org.springframework.beans.factory.annotation.Autowired
@@ -71,5 +72,11 @@ class MessageController(private val messageService: MessageSessionService) {
 
     private fun getToken(token: String): String {
         return token.removePrefix("Bearer ")
+    }
+
+    @GetMapping("/test")
+    fun getAllSessions(): ResponseEntity<List<MessageSession>> {
+        val sessions = messageService.getAllSessions()
+        return ResponseEntity.ok(sessions)
     }
 }
