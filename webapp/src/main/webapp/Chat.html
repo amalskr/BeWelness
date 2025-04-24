@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeWellness | Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/BeWelness/static/css/chat.css">
+    <link rel="stylesheet" href="/BeWelness/static/css/dashboard_styles.css">
+</head>
+<body>
+<!-- Top Bar -->
+<div class="navbar blue darken-2">
+    <div class="container">
+        <span class="brand-logo left white-text">👋 Hi, <span id="profileName"></span> | <span id="userEmail"></span> </span>
+        <button id="logoutBtn" class="btn red right">Close</button>
+    </div>
+</div>
+
+<div class="chat-container card">
+    <h5 class="center-align" id="counselorName">Chat Room</h5>
+    <div class="chat-box" id="chatBox">
+        <div class="message outgoing">Send a message</div>
+    </div>
+    <div class="message-input">
+        <input type="text" id="message" placeholder="Type a message..." class="browser-default">
+        <button class="btn waves-effect waves-light" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script src="/BeWelness/static/js/chat.js"></script>
+
+</body>
+</html>

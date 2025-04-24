@@ -7,7 +7,6 @@ import com.aecs.chatservice.model.MessageContent
 import com.aecs.chatservice.model.MessageSession
 import com.aecs.chatservice.service.MessageSessionService
 import com.aecs.chatservice.service.UserServiceClient
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,10 +14,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/message")
-class MessageController(private val messageService: MessageSessionService) {
-
-    @Autowired
-    private val userServiceClient: UserServiceClient? = null
+class MessageController(
+    private val messageService: MessageSessionService,
+    private val userServiceClient: UserServiceClient
+) {
 
     /*
     * 1. first user create a message with selecting a counselor
@@ -74,9 +73,19 @@ class MessageController(private val messageService: MessageSessionService) {
         return token.removePrefix("Bearer ")
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test_all")
     fun getAllSessions(): ResponseEntity<List<MessageSession>> {
         val sessions = messageService.getAllSessions()
         return ResponseEntity.ok(sessions)
+    }
+
+    @GetMapping("/test")
+    fun getTest(): ResponseEntity<String> {
+        return ResponseEntity.ok("Chat-Service Up&Run")
+    }
+
+    @GetMapping("/helloserver")
+    fun helloServer(): ResponseEntity<String> {
+        return ResponseEntity.ok("Hello from Chat Server!")
     }
 }

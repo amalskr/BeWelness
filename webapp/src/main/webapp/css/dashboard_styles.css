@@ -1,0 +1,133 @@
+body {
+    background-color: #f5f5f5;
+    padding-top: 1.5%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.container {
+    margin-top: 50px;
+}
+.modal {
+    overflow: visible !important;
+}
+.modal-content {
+    overflow: visible !important;
+}
+.datepicker-container {
+    z-index: 10000 !important;
+}
+/* Scrollable Counselors List */
+.scrollable-list {
+    flex-grow: 1;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+/* My Bookings Section */
+.my-bookings-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    background: #ffebee;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ff5252;
+}
+
+
+.my-bookings-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.my-bookings-container .collection-item {
+    color: #3b77a6;
+    padding: 15px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+.chat-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+/* Split Dashboard */
+.dashboard-container {
+    display: flex;
+    gap: 20px;
+    height: calc(100vh - 100px); /* Adjust height dynamically */
+}
+
+.left-panel, .right-panel {
+    flex: 1;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.counselor-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+.counselor-email {
+    font-size: 12px;
+    color: gray;
+}
+.session-info {
+    text-align: right;
+}
+.status {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.status-pending {
+    color: #ff9800; /* Orange */
+}
+.status-confirmed {
+    color: #4caf50; /* Green */
+}
+.status-canceled {
+    color: #f44336; /* Red */
+}
+.status-done {
+    color: #2196f3; /* Blue */
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.modal-content .row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
