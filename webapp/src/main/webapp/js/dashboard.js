@@ -400,7 +400,7 @@ async function fetchMessagedUsers(cusId) {
                     cusId: userId
                 }));
                 // Redirect to chat.html after successful message sending
-                window.location.href = "/BeWelness/static/chat.html";
+                window.location.href = "../chat.html";
 
             }
         });
@@ -457,7 +457,7 @@ async function sendMessageApi(counselorName, fullName) {
                 M.Modal.getInstance(bookingModal).close();
 
                 // Redirect to chat.html after successful message sending
-                window.location.href = "/BeWelness/static/chat.html";
+                window.location.href = "../chat.html";
             }
         } else {
             alert(`Send Message failed: ${result.message}`);
