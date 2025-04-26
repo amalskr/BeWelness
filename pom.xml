@@ -14,7 +14,6 @@
     <module>chat-service</module>
     <module>booking-service</module>
     <module>gateway</module>
-    <module>webapp</module>
   </modules>
 
   <build>
