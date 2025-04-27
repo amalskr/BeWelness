@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // If no email is found, redirect to loginform
     if (!storedProfile) {
-        window.location.href = '/BeWelness/static/index.html';
+        window.location.href = 'index.html';
         return;
     }
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const chatData = localStorage.getItem('counselor_chat');
 
     if (!chatData) {
-        window.location.href = '/BeWelness/static/dashboard.html';
+        window.location.href = 'dashboard.html';
         return;
     }
 

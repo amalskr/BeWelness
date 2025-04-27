@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // If no email is found, redirect to login
     if (!storedProfile) {
-        window.location.href = '/BeWelness/static/index.html';
+        window.location.href = 'index.html';
         return;
     }
 
@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
         window.history.back();
 
         // Redirect to login page
-        window.location.href = '/BeWelness/static/index.html';
+        window.location.href = 'index.html';
     });
 
 
     // Prevent back navigation
     window.onpopstate = function () {
         if (!localStorage.getItem('auth_profile')) {
-            window.location.href = '/BeWelness/static/index.html';
+            window.location.href = 'index.html';
         }
     };
 
@@ -400,7 +400,7 @@ async function fetchMessagedUsers(cusId) {
                     cusId: userId
                 }));
                 // Redirect to chat.html after successful message sending
-                window.location.href = "/BeWelness/static/chat.html";
+                window.location.href = "chat.html";
 
             }
         });
@@ -457,7 +457,7 @@ async function sendMessageApi(counselorName, fullName) {
                 M.Modal.getInstance(bookingModal).close();
 
                 // Redirect to chat.html after successful message sending
-                window.location.href = "/BeWelness/static/chat.html";
+                window.location.href = "chat.html";
             }
         } else {
             alert(`Send Message failed: ${result.message}`);

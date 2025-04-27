@@ -45,7 +45,7 @@ async function loginUser(email, password) {
             localStorage.setItem('access_token', data.accessToken);
 
             setTimeout(() => {
-                window.location.href = '/BeWelness/static/dashboard.html';
+                window.location.href = 'dashboard.html';
             }, 1000);
 
         } else {
