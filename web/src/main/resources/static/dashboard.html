@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Google Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/BeWelness/static/css/dashboard_styles.css"> <!-- Custom Styles -->
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="navbar blue darken-2">
+    <div class="container">
+        <span class="brand-logo left white-text">👋 Hi, <span id="profileName"></span> | <span id="userEmail"></span>
+        | <span id="userRole"></span> </span>
+        <button id="logoutBtn" class="btn red right">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row dashboard-container">
+        <!-- Left Panel: Counselors List -->
+        <div class="col s4 left-panel">
+            <h5 id="heading">Counselors</h5>
+
+            <div class="scrollable-list">
+                <ul id="counselorList" class="collection"></ul>
+            </div>
+
+            <div class="chat-user-list">
+                <select id="messagedUsersDropdown" class="browser-default">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Right Panel: Bookings Display -->
+        <div class="col s8 right-panel">
+            <h5>My Bookings</h5>
+            <div class="my-bookings-container">
+                <ul id="myBookingsList" class="collection red-text"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/BeWelness/static/js/dashboard.js"></script>
+
+<!--Edit Booking Model-->
+<div id="editBookingModal" class="modal">
+    <div class="modal-content">
+        <h5>Update Booking</h5>
+        <div class="row">
+            <div class="input-field col s12">
+                <label for="editModalCounselorName" class="active">Counselor Name</label>
+                <p id="editModalCounselorName" class="browser-default"></p>
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalCounselorEmail" class="active">Counselor Email</label>
+                <p id="editModalCounselorEmail" class="browser-default"></p>
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalSessionDateTime" class="active">Session Date & Time</label>
+                <p id="editModalSessionDateTime" class="browser-default"></p>
+            </div>
+            <div class="input-field col s12">
+                <label for="editModalStatus" class="active">Status</label>
+                <select id="editModalStatus" class="browser-default">
+                </select>
+            </div>
+        </div>
+        <input type="hidden" id="editModalBookingId" readonly>
+        <input type="hidden" id="editModalCounselorId" readonly>
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close btn red">Cancel</button>
+        <button class="btn blue" onclick="updateBooking()">Update</button>
+    </div>
+</div>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Book an Appointment</h5>
+            <button id="chatWithCounselor" class="btn-small green darken-2 chat-btn">Chat</button>
+        </div>
+
+        <form id="bookingForm">
+            <!-- Read-Only Counselor Name -->
+            <div class="input-field">
+                <input type="text" id="modalCounselorName" readonly>
+                <label for="modalCounselorName">Counselor</label>
+            </div>
+
+            <!-- Date Picker -->
+            <div class="input-field">
+                <input type="text" id="appointmentDate" class="datepicker" required>
+                <label for="appointmentDate">Select Date</label>
+            </div>
+
+            <!-- Time Picker -->
+            <div class="input-field">
+                <input type="text" id="appointmentTime" class="timepicker" required>
+                <label for="appointmentTime">Select Time</label>
+            </div>
+            <input type="hidden" id="modalCounselorId" readonly>
+        </form>
+    </div>
+
+    <!-- Modal Buttons -->
+    <div class="modal-footer">
+        <button id="cancelBooking" class="modal-close btn grey">Cancel</button>
+        <button id="bookingNow" class="btn blue darken-2">Book Appointment</button>
+    </div>
+</div>
+
+
+</body>
+</html>
